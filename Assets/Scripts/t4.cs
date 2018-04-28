@@ -22,6 +22,9 @@ public class t4 : MonoBehaviour {
 	private string playerName = "FPSController";
 	private GameObject player;
 	private float ceilingHeight = 3f;
+	private bool toggleGravity = false;
+    private static Vector3 down = new Vector3(0.0f, -9.8f, 0f);
+    private static Vector3 up = new Vector3(0f, 9.8f, 0f);
 	
 	
 	private char GetField(string map, int sizeX, int x, int y) {
@@ -50,6 +53,19 @@ public class t4 : MonoBehaviour {
 		player.transform.position = position;
 	}
 	
+	private void ToggleGravity(){
+		if (Input.GetKey(KeyCode.G)){
+            toggleGravity = !toggleGravity;
+            print(Physics.gravity);
+            if (toggleGravity){
+                Physics.gravity = up;
+            }
+            else {
+                Physics.gravity = down;
+            }
+        } 
+	}
+	
 	void Start () {
 		PlacePlane(sizeX, sizeY, ceilingHeight, true);
 		PlacePlane(sizeX, sizeY, 0f, false);
@@ -71,6 +87,6 @@ public class t4 : MonoBehaviour {
 	}
 	
 	void Update () {
-		
+		ToggleGravity();
 	}
 }
