@@ -8,10 +8,10 @@ public class t4 : MonoBehaviour {
 	
 	private string map1 = "" +
 		"##########" +
-		"# ##    ##" +
-		"# ## ##  #" +
+		"#   #   ##" +
+		"# #   #  #" +
 		"######  ##" +
-		"# #      #" +
+		"#        #" +
 		"##########";
 	
 	private string map2 = "" +
@@ -96,7 +96,7 @@ public class t4 : MonoBehaviour {
 		PlaceTorches();
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
-		PlacePlayer(GetCoords(1, 1, 64.8f), startingRotation);
+		PlacePlayer(GetCoords(1, 1, 1f), startingRotation);
 	}
 	
 	void Update () {
