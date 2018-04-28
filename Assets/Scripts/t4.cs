@@ -13,9 +13,10 @@ public class t4 : MonoBehaviour {
 		"### #" +
 		"  #  " +
 		"#   #";
-	
 	private int sizeX = 5;
 	private int sizeY = 6;
+	private float[] lightX = {1.5f};
+	private float[] lightY = {4.5f};
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
@@ -27,10 +28,21 @@ public class t4 : MonoBehaviour {
 		plane.transform.rotation = Quaternion.Euler(isCeiling ? 180 : 0, 0, 0);
 		plane.transform.localScale = new Vector3(sizeX / 10f, 1f, sizeY / 10f);
 	}
+	
+	private void PlaceTorches() {
+		
+		for(int i=0; i<lightX.Length; i++) {
+			GameObject lightGameObject = new GameObject("The Light");
+			Light lightComp = lightGameObject.AddComponent<Light>();
+			lightComp.color = new Color(.8f, .6f, 0f, 1f);
+			lightGameObject.transform.position = new Vector3(lightX[i], .5f, lightY[i]);
+		}
+	}
 
 	void Start () {
 		PlacePlane(sizeX, sizeY, 1f, true);
 		PlacePlane(sizeX, sizeY, 0f, false);
+		PlaceTorches();
 		
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
