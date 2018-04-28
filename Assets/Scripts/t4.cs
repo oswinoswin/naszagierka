@@ -7,16 +7,22 @@ public class t4 : MonoBehaviour {
 	public Texture texture;
 	
 	private string map = "" +
-		"### #" +
-		"# # #" +
-		"#   #" +
-		"### #" +
-		"  #  " +
-		"#   #";
+		"###      #" +
+		"# #      #" +
+		"#        #" +
+		"###      #" +
+		"  #      #" +
+		"#    #####";
 	private int sizeX = 5;
 	private int sizeY = 6;
 	private float[] lightX = {1.5f};
 	private float[] lightY = {4.5f};
+	private Vector3 startingPosition = new Vector3(2.5f ,0.5f ,4.5f);
+	private Quaternion startingRotation = new Quaternion(0,0,0, 1);
+	private string playerName = "FPSController";
+	private GameObject player;
+	private float ceilingHeight = 3f;
+	
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
@@ -38,12 +44,17 @@ public class t4 : MonoBehaviour {
 			lightGameObject.transform.position = new Vector3(lightX[i], .5f, lightY[i]);
 		}
 	}
-
+	
+	private void PlacePlayer(Vector3 position, Quaternion rotation){
+		player = GameObject.Find(playerName);
+		player.transform.position = position;
+	}
+	
 	void Start () {
-		PlacePlane(sizeX, sizeY, 1f, true);
+		PlacePlane(sizeX, sizeY, ceilingHeight, true);
 		PlacePlane(sizeX, sizeY, 0f, false);
 		PlaceTorches();
-		
+				
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
 				if(GetField(map, sizeX, x, y) == '#') {
@@ -55,6 +66,8 @@ public class t4 : MonoBehaviour {
 				}
             }
         }
+		
+		PlacePlayer(startingPosition, startingRotation);
 	}
 	
 	void Update () {
