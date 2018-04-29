@@ -51,15 +51,6 @@ public class t4 : MonoBehaviour {
 		plane.transform.localScale = new Vector3(sizeX / 10f, 1f, sizeY / 10f);
 	}
 	
-	private void PlaceTorches() {	
-		for(int i=0; i<lightX.Length; i++) {
-			GameObject lightGameObject = new GameObject("The Light");
-			Light lightComp = lightGameObject.AddComponent<Light>();
-			lightComp.color = new Color(.8f, .6f, 0f, 1f);
-			lightGameObject.transform.position = new Vector3(lightX[i], .5f, lightY[i]);
-		}
-	}
-	
 	private void PlaceLabyrinth(string map, int sizeX, int sizeY, float h) {
 		for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
@@ -93,7 +84,6 @@ public class t4 : MonoBehaviour {
 	void Start () {
 		PlacePlane(sizeX, sizeY, ceilingHeight, true);
 		PlacePlane(2*sizeX, 2*sizeY, 0f, false);
-		PlaceTorches();
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
 		PlacePlayer(GetCoords(1, 1, 1f), startingRotation);
