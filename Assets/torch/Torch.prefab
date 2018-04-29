@@ -308,7 +308,7 @@ MonoBehaviour:
   Etincelles: {fileID: 100004}
   Fumee: {fileID: 100010}
   MaxLightIntensity: 3
-  IntensityLight: 0.2
+  IntensityLight: 0.5
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1
