@@ -5,6 +5,7 @@ using UnityEngine;
 public class t4 : MonoBehaviour {
 	
 	public Texture texture;
+	public Texture heightMap;
 	
 	private string map1 = "" +
 		"##########" +
@@ -46,11 +47,17 @@ public class t4 : MonoBehaviour {
 	}
 	
 	private void PlaceWall(int x1, int x2, int y1, int y2, float h1, float h2) {
-		print("" + x1 + x2 + y1 + y2);
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.position = new Vector3((x1 + x2 + 1)/2f, (h1 + h2)/2f, (y1 + y2 + 1)/2f);
 		cube.transform.localScale = new Vector3((x2 - x1 + 1), (h2 - h1), (y2 - y1 + 1));
 		cube.GetComponent<Renderer>().material.mainTexture = texture;
+		cube.GetComponent<Renderer>().material.mainTextureScale = new Vector2(.5f, .5f);
+		
+		//cube.GetComponent<Renderer>().material.SetTexture("_ParallaxMap", heightMap);
+		//cube.GetComponent<Renderer>().material.SetFloat("_Parallax", 0.08f);
+		cube.GetComponent<Renderer>().material.EnableKeyword("_NORMALMAP");
+		cube.GetComponent<Renderer>().material.SetTexture("_BumpMap", heightMap);
+		cube.GetComponent<Renderer>().material.SetFloat("_BumpScale", 0.5f);
 		
 		Mesh mesh = cube.GetComponent<MeshFilter>().mesh;
 		Vector2[] uvs = mesh.uv;

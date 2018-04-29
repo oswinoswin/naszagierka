@@ -24,7 +24,7 @@ public class t4person : MonoBehaviour {
 	private void ToggleGravity(){
 		if (Input.GetKey(KeyCode.G)){
             toggleGravity = !toggleGravity;
-            print(Physics.gravity);
+            //print(Physics.gravity);
             if (toggleGravity){
                 Physics.gravity = up;
             }
