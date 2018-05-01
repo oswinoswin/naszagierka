@@ -6,6 +6,7 @@ public class t4 : MonoBehaviour {
 	
 	public Texture texture;
 	public Texture heightMap;
+	public GameObject player;
 	
 	private string map1 = "" +
 		"##########" +
@@ -23,13 +24,25 @@ public class t4 : MonoBehaviour {
 		"#        #" +
 		"##########";
 		
-	private int sizeX = 10;
-	private int sizeY = 6;
-	private float ceilingHeight = 3f;
+	private const int sizeX = 10;
+	private const int sizeY = 6;
+	private const float ceilingHeight = 3f;
+	
+	private Vector2 currentPosition;
 	
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
+	}
+	
+	private Vector2 CurrentPosition() {
+		Transform t = player.transform;
+		return new Vector2((int)t.position[0], (int)t.position[2]);
+	}
+	
+	private void PositionChanged(Vector2 newPosition) {
+		print(newPosition);
+		currentPosition = newPosition;
 	}
 	
 	private void PlacePlane(int sizeX, int sizeY, float h, bool isCeiling) {
@@ -104,5 +117,12 @@ public class t4 : MonoBehaviour {
 		PlaceOuterWalls(sizeX, sizeY, ceilingHeight);
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
+	}
+	
+	void Update() {
+		Vector2 newPosition = CurrentPosition();
+		if(newPosition != currentPosition) {
+			PositionChanged(newPosition);
+		}
 	}
 }
