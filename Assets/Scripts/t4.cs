@@ -5,27 +5,14 @@ using UnityEngine;
 public class t4 : MonoBehaviour {
 	
 	public Texture texture;
+	public Texture lavaTexture;
 	public Texture heightMap;
 	public GameObject player;
 	
-	private string map1 = "" +
-		"##########" +
-		"#   #   ##" +
-		"# #   #  #" +
-		"######  ##" +
-		"#        #" +
-		"##########";
-	
-	private string map2 = "" +
-		"##########" +
-		"#        #" +
-		"#    #   #" +
-		"#    #   #" +
-		"#        #" +
-		"##########";
-		
-	private const int sizeX = 10;
-	private const int sizeY = 6;
+	private string map1 = t4maps.map1;
+	private string map2 = t4maps.map2;
+	private int sizeX = t4maps.sizeX;
+	private int sizeY = t4maps.sizeY;
 	private const float ceilingHeight = 3f;
 	
 	private Vector2 currentPosition;
@@ -35,21 +22,40 @@ public class t4 : MonoBehaviour {
 		return map[y * sizeX + x];
 	}
 	
+	/*
 	private Vector2 CurrentPosition() {
 		Transform t = player.transform;
 		return new Vector2((int)t.position[0], (int)t.position[2]);
 	}
 	
 	private void PositionChanged(Vector2 newPosition) {
-		print(newPosition);
-		currentPosition = newPosition;
+		string currentMap = t4person.toggleGravity ? map2 : map1;
+		char field = GetField(currentMap, sizeX, (int)newPosition[0], (int)newPosition[1]);
+		if(field == '_') {
+			t4person.PlacePlayer(new Vector3(1.5f, 1.5f, 1f), new Quaternion(0, 0, 0, 1));
+			currentPosition = new Vector2(1, 1);
+		} else {
+			currentPosition = newPosition;
+		}
 	}
+	*/
 	
-	private void PlacePlane(int sizeX, int sizeY, float h, bool isCeiling) {
-		GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-		plane.transform.position = new Vector3(sizeX / 2f, h, sizeY / 2f);
-		plane.transform.rotation = Quaternion.Euler(isCeiling ? 180 : 0, 0, 0);
-		plane.transform.localScale = new Vector3(sizeX / 10f, 1f, sizeY / 10f);
+	private void PlaceFloor(string map, int sizeX, int sizeY, float h, bool isCeiling) {
+		for (int x = 1; x < sizeX-1; x++) {
+            for (int y = 1; y < sizeY; y++) {
+				char field = GetField(map, sizeX, x, y);
+				GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+				plane.transform.position = new Vector3(x+.5f, h, y+.5f);
+				plane.transform.rotation = Quaternion.Euler(isCeiling ? 180 : 0, 0, 0);
+				plane.transform.localScale = new Vector3(.1f, 1f, .1f);		
+				if(field == '_') {
+					plane.name = "Lava";
+					plane.GetComponent<Renderer>().material.mainTexture = lavaTexture;	
+					plane.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");	
+					plane.GetComponent<Renderer>().material.SetColor ("_EmissionColor", new Color(1f, .4f, .1f, 1f));
+				}					
+			}
+		}
 	}
 	
 	private void PlaceOuterWalls(int sizeX, int sizeY, float h) {
@@ -79,7 +85,6 @@ public class t4 : MonoBehaviour {
 		uvs[18][0] = uvs[19][0] = uvs[22][0] = uvs[23][0] = (y2 - y1 + 1);
 		uvs[18][1] = uvs[17][1] = uvs[21][1] = uvs[22][1] = (h2 - h1);
 		mesh.uv = uvs;
-		//print(System.String.Join("", new List<Vector2>(mesh.uv).ConvertAll(i => i.ToString()).ToArray()));
 	}
 	
 	private void PlaceLabyrinth(string map, int sizeX, int sizeY, float h) {
@@ -91,7 +96,7 @@ public class t4 : MonoBehaviour {
 					startWall = x;
 				} else if(startWall == x-1) {
 					startWall = -1;
-				} else if((field == ' ' && startWall >= 0) || x == sizeX-1) {
+				} else if((field != '#' && startWall >= 0) || x == sizeX-1) {
 					PlaceWall(startWall, x-1, y, y, h, h+1);
 					startWall = -1;
 				}
@@ -103,7 +108,7 @@ public class t4 : MonoBehaviour {
 				char field = GetField(map, sizeX, x, y);
 				if(field == '#' && startWall == -1) {
 					startWall = y;
-				} else if((field == ' ' && startWall >= 0) || y == sizeY-1) {
+				} else if((field != '#' && startWall >= 0) || y == sizeY-1) {
 					PlaceWall(x, x, startWall, y-1, h, h+1);
 					startWall = -1;
 				}
@@ -112,17 +117,19 @@ public class t4 : MonoBehaviour {
 	}
 	
 	void Start () {
-		PlacePlane(sizeX, sizeY, ceilingHeight, true);
-		PlacePlane(2*sizeX, 2*sizeY, 0f, false);
+		PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
+		PlaceFloor(map1, sizeX, sizeY, 0f, false);
 		PlaceOuterWalls(sizeX, sizeY, ceilingHeight);
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
 	}
 	
 	void Update() {
+		/*
 		Vector2 newPosition = CurrentPosition();
 		if(newPosition != currentPosition) {
 			PositionChanged(newPosition);
 		}
+		*/
 	}
 }

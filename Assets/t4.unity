@@ -113,6 +113,34 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &131988240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 131988241}
+  m_Layer: 0
+  m_Name: Maps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &131988241
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 131988240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.52785, y: -3.6950998, z: -12.588556}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &136721626
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   texture: {fileID: 2800000, guid: df5b0b26b3f39374286256c3c625bd31, type: 3}
+  lavaTexture: {fileID: 2800000, guid: 001383acb8aecd6409be2758e76eb2e4, type: 3}
   heightMap: {fileID: 2800000, guid: dde7b77411035114a85b2f99fe5c6d0b, type: 3}
   player: {fileID: 1522503458}
 --- !u!4 &136721628
@@ -160,6 +189,17 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
   m_PrefabInternal: {fileID: 1271500231}
+--- !u!114 &348712161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 348712160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f679c0e0cd93a246957df56c02d8783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &348712166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +211,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755ebe39a9603764791001c007e42459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &348712168
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 348712160}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &860733781
 GameObject:
   m_ObjectHideFlags: 0
