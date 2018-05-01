@@ -6,7 +6,7 @@ public class t4maps : MonoBehaviour {
 
 	public static string map1 = "" +
 		"##########" +
-		"#   #   ##" +
+		"#   #  s##" +
 		"# #   # _#" +
 		"#_####  ##" +
 		"#_#___   #" +

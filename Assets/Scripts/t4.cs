@@ -8,6 +8,7 @@ public class t4 : MonoBehaviour {
 	public Texture lavaTexture;
 	public Texture heightMap;
 	public GameObject player;
+	public GameObject szalamiPrefab;
 	
 	private string map1 = t4maps.map1;
 	private string map2 = t4maps.map2;
@@ -44,6 +45,10 @@ public class t4 : MonoBehaviour {
 		for (int x = 1; x < sizeX-1; x++) {
             for (int y = 1; y < sizeY; y++) {
 				char field = GetField(map, sizeX, x, y);
+				if(field == '#') {
+					continue;
+				}
+				
 				GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
 				plane.transform.position = new Vector3(x+.5f, h, y+.5f);
 				plane.transform.rotation = Quaternion.Euler(isCeiling ? 180 : 0, 0, 0);
@@ -53,7 +58,19 @@ public class t4 : MonoBehaviour {
 					plane.GetComponent<Renderer>().material.mainTexture = lavaTexture;	
 					plane.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");	
 					plane.GetComponent<Renderer>().material.SetColor ("_EmissionColor", new Color(1f, .4f, .1f, 1f));
-				}					
+				}	
+			}
+		}
+	}
+	
+	private void PlaceSzalami(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
+		float h = isCeiling ? floorH - .4f : floorH + .4f;
+		for (int x = 1; x < sizeX-1; x++) {
+            for (int y = 1; y < sizeY; y++) {	
+				char field = GetField(map, sizeX, x, y);
+				if(field == 's') {
+					GameObject szalami = Instantiate(szalamiPrefab, new Vector3(x+.5f, h, y+.5f), Quaternion.identity);
+				}	
 			}
 		}
 	}
@@ -119,6 +136,7 @@ public class t4 : MonoBehaviour {
 	void Start () {
 		PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
 		PlaceFloor(map1, sizeX, sizeY, 0f, false);
+		PlaceSzalami(map1, sizeX, sizeY, 0f, false);
 		PlaceOuterWalls(sizeX, sizeY, ceilingHeight);
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
