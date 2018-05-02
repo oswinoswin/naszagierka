@@ -12,13 +12,14 @@ public class t4torches : MonoBehaviour {
 	
 	private List<GameObject> torches = new List<GameObject>();
 	
-	public void PlaceTorches() {
+	public void PlaceTorches(int lvl) {
 		ClearAll();
 		
-		int[] xs = t4maps.xs;
-		int[] ys = t4maps.ys;
-		char[] orientations = t4maps.orientations;
-		bool[] ceiling = t4maps.ceiling;
+		t4maps.Torches torchesData = t4maps.levels[lvl].torches;
+		int[] xs = torchesData.xs;
+		int[] ys = torchesData.ys;
+		char[] orientations = torchesData.orientations;
+		bool[] ceiling = torchesData.ceiling;
 		
 		for(int i=0; i<xs.Length; i++) {
 			PlaceTorch(xs[i], ys[i], orientations[i], ceiling[i]);
@@ -63,6 +64,6 @@ public class t4torches : MonoBehaviour {
 	}
 	
 	void Start() {
-		PlaceTorches();
+		PlaceTorches(0);
 	}
 }

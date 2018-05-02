@@ -147,8 +147,6 @@ public class t4labyrinth : MonoBehaviour {
 		floors.ForEach(Destroy);
 		szalamis.ForEach(Destroy);
 		
-		torchesScript.PlaceTorches();
-		
 		walls.Clear();
 		floors.Clear();
 		szalamis.Clear();
@@ -170,5 +168,7 @@ public class t4labyrinth : MonoBehaviour {
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
 		PlaceDoors(map1, sizeX, sizeY, 0, false);
+		
+		torchesScript.PlaceTorches(lvl);
 	}
 }

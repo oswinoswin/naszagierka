@@ -9,12 +9,28 @@ public class t4maps : MonoBehaviour {
 		public string mapCeil;
 		public int sizeX;
 		public int sizeY;
+		public Torches torches;
 		
-		public Level(string amapFloor, string amapCeil, int asizeX, int asizeY) {
+		public Level(string amapFloor, string amapCeil, int asizeX, int asizeY, Torches atorches) {
 			mapFloor = amapFloor;
 			mapCeil = amapCeil;
 			sizeX = asizeX;
 			sizeY = asizeY;
+			torches = atorches;
+		}
+	}
+	
+	public class Torches {		
+		public int[] xs;
+		public int[] ys;
+		public char[] orientations;
+		public bool[] ceiling;
+		
+		public Torches(int[] axs, int[] ays, char[] aorientations, bool[] aceiling) {
+			xs = axs;
+			ys = ays;
+			orientations = aorientations;
+			ceiling = aceiling;
 		}
 	}
 	
@@ -42,7 +58,14 @@ public class t4maps : MonoBehaviour {
 			"#  #     #" +
 			"##########",
 			
-			10, 6
+			10, 6,
+			
+			new Torches(
+				new int[] {1, 2, 3, 3, 1}, 
+				new int[] {1, 1, 1, 2, 1}, 
+				new char[] {'w', 'n', 'e', 's', 'w'}, 
+				new bool[] {false, false, false, false, true}
+			)
 		),
 		new Level(
 			"####" +
@@ -55,31 +78,14 @@ public class t4maps : MonoBehaviour {
 			"## #" +
 			"####",
 			
-			4, 4
+			4, 4,
+			
+			new Torches(
+				new int[] {2}, 
+				new int[] {2}, 
+				new char[] {'e'}, 
+				new bool[] {true}
+			)
 		)
 	};
-
-	public static string[] mapsFloor = {
-		
-		
-		
-	};
-	
-	public static string[] mapsCeil = {
-		
-		
-		"####" +
-		"# ##" +
-		"#  #" +
-		"####"
-	};
-		
-	public static int[] sizeX = {10, 4};
-	public static int[] sizeY = {6, 4};
-	
-	// torches
-	public static int[] xs = {1, 2, 3, 3, 1};
-	public static int[] ys = {1, 1, 1, 2, 1};
-	public static char[] orientations = {'w', 'n', 'e', 's', 'w'};
-	public static bool[] ceiling = {false, false, false, false, true};
 }
