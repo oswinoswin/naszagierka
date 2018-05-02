@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 95031340563549258}
   - component: {fileID: 111693968133215624}
   - component: {fileID: 320288139472502058}
+  - component: {fileID: 64142436193970578}
   m_Layer: 0
   m_Name: szalami2
   m_TagString: Untagged
@@ -38,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1091876675670214}
   m_LocalRotation: {x: -0.17930174, y: 0.33573622, z: 0.065260485, w: 0.92242783}
-  m_LocalPosition: {x: 2.5, y: 0.3, z: 1.5}
+  m_LocalPosition: {x: 11.026403, y: -0.05097866, z: 2.4671955}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.01}
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,6 +86,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1091876675670214}
   m_Mesh: {fileID: 4300000, guid: 30c099b2e9db1e84a9bfad25324ed625, type: 3}
+--- !u!64 &64142436193970578
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1091876675670214}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 30c099b2e9db1e84a9bfad25324ed625, type: 3}
 --- !u!95 &95031340563549258
 Animator:
   serializedVersion: 3
@@ -124,13 +139,13 @@ PlayableDirector:
   m_GameObject: {fileID: 1091876675670214}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 282114283c4631e429741a751b843ae1, type: 2}
+  m_PlayableAsset: {fileID: 0}
   m_InitialState: 1
   m_WrapMode: 1
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: 114605302326124244, guid: 282114283c4631e429741a751b843ae1, type: 2}
+  - key: {fileID: 0}
     value: {fileID: 1091876675670214}
   m_ExposedReferences:
     m_References: []

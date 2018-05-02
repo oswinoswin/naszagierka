@@ -25,9 +25,10 @@ public class t4labyrinth : MonoBehaviour {
 				plane.transform.localScale = new Vector3(.1f, 1f, .1f);		
 				if(field == '_') {
 					plane.name = "Lava";
-					plane.GetComponent<Renderer>().material.mainTexture = lavaTexture;	
-					plane.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");	
-					plane.GetComponent<Renderer>().material.SetColor ("_EmissionColor", new Color(1f, .4f, .1f, 1f));
+					Material material = plane.GetComponent<Renderer>().material;
+					material.mainTexture = lavaTexture;	
+					material.EnableKeyword("_EMISSION");	
+					material.SetColor ("_EmissionColor", new Color(1f, .4f, .1f, 1f));
 				}	
 			}
 		}
@@ -40,6 +41,7 @@ public class t4labyrinth : MonoBehaviour {
 				char field = GetField(map, sizeX, x, y);
 				if(field == 's') {
 					GameObject szalami = Instantiate(szalamiPrefab, new Vector3(x+.5f, h, y+.5f), Quaternion.identity);
+					szalami.name = "Szalami";
 				}	
 			}
 		}
@@ -54,16 +56,16 @@ public class t4labyrinth : MonoBehaviour {
 	
 	private static void PlaceWall(int x1, int x2, int y1, int y2, float h1, float h2, Texture stoneTexture, Texture heightMap) {
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		cube.name = "Wall";
 		cube.transform.position = new Vector3((x1 + x2 + 1)/2f, (h1 + h2)/2f, (y1 + y2 + 1)/2f);
 		cube.transform.localScale = new Vector3((x2 - x1 + 1), (h2 - h1), (y2 - y1 + 1));
-		cube.GetComponent<Renderer>().material.mainTexture = stoneTexture;
-		cube.GetComponent<Renderer>().material.mainTextureScale = new Vector2(.5f, .5f);
+		Material material = cube.GetComponent<Renderer>().material;
+		material.mainTexture = stoneTexture;
+		material.mainTextureScale = new Vector2(.5f, .5f);
 		
-		//cube.GetComponent<Renderer>().material.SetTexture("_ParallaxMap", heightMap);
-		//cube.GetComponent<Renderer>().material.SetFloat("_Parallax", 0.08f);
-		cube.GetComponent<Renderer>().material.EnableKeyword("_NORMALMAP");
-		cube.GetComponent<Renderer>().material.SetTexture("_BumpMap", heightMap);
-		cube.GetComponent<Renderer>().material.SetFloat("_BumpScale", 0.5f);
+		material.EnableKeyword("_NORMALMAP");
+		material.SetTexture("_BumpMap", heightMap);
+		material.SetFloat("_BumpScale", 0.5f);
 		
 		Mesh mesh = cube.GetComponent<MeshFilter>().mesh;
 		Vector2[] uvs = mesh.uv;
@@ -81,7 +83,7 @@ public class t4labyrinth : MonoBehaviour {
 				char field = GetField(map, sizeX, x, y);
 				if(field == '#' && startWall == -1) {
 					startWall = x;
-				} else if(startWall == x-1) {
+				} else if(field != '#' && startWall == x-1) {
 					startWall = -1;
 				} else if((field != '#' && startWall >= 0) || x == sizeX-1) {
 					PlaceWall(startWall, x-1, y, y, h, h+1, stoneTexture, heightMap);
@@ -95,12 +97,29 @@ public class t4labyrinth : MonoBehaviour {
 				char field = GetField(map, sizeX, x, y);
 				if(field == '#' && startWall == -1) {
 					startWall = y;
-				} else if((field != '#' && startWall >= 0) || y == sizeY-1) {
+				} else if((field != '#' || y == sizeY-1) && startWall >= 0) {
 					PlaceWall(x, x, startWall, y-1, h, h+1, stoneTexture, heightMap);
 					startWall = -1;
 				}
             }
         }
+	}
+	
+	private static void PlaceDoors(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
+		float doorHeight = .8f;
+		float h = isCeiling ? floorH - doorHeight/2f : floorH + doorHeight/2f;
+		for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {	
+				char field = GetField(map, sizeX, x, y);
+				if(field == 'D') {
+					bool onVerticalWall = x == 0 || x == sizeX-1;
+					GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					cube.name = "Door";
+					cube.transform.position = new Vector3(x+.5f, h, y+.5f);
+					cube.transform.localScale = new Vector3((onVerticalWall ? 1.06f : .6f), doorHeight, (onVerticalWall ? .6f : 1.06f));
+				}	
+			}
+		}
 	}
 	
 	public static void BuildLabyrinth(int lvl, Texture stoneTexture, Texture lavaTexture, Texture heightMap, GameObject szalamiPrefab) {
@@ -115,5 +134,6 @@ public class t4labyrinth : MonoBehaviour {
 		PlaceOuterWalls(sizeX, sizeY, ceilingHeight, stoneTexture, heightMap);
 		PlaceLabyrinth(map1, sizeX, sizeY, 0, stoneTexture, heightMap);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1, stoneTexture, heightMap);
+		PlaceDoors(map1, sizeX, sizeY, 0, false);
 	}
 }
