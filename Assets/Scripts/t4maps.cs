@@ -4,22 +4,24 @@ using UnityEngine;
 
 public class t4maps : MonoBehaviour {
 
-	public static string map1 = "" +
+	public static string[] mapsFloor = {
 		"##########" +
 		"#   #  s##" +
 		"# #   # _#" +
 		"#_####  ##" +
 		"#_#___   #" +
-		"##########";
+		"##########"
+	};
 	
-	public static string map2 = "" +
+	public static string[] mapsCeil = {
 		"##########" +
 		"#        #" +
 		"#    #   #" +
 		"#    #   #" +
 		"#        #" +
-		"##########";
+		"##########"
+	};
 		
-	public static int sizeX = 10;
-	public static int sizeY = 6;
+	public static int[] sizeX = {10};
+	public static int[] sizeY = {6};
 }

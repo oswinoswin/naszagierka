@@ -10,11 +10,8 @@ public class t4 : MonoBehaviour {
 	public GameObject player;
 	public GameObject szalamiPrefab;
 	
-	private string map1 = t4maps.map1;
-	private string map2 = t4maps.map2;
-	private int sizeX = t4maps.sizeX;
-	private int sizeY = t4maps.sizeY;
 	private const float ceilingHeight = 3f;
+	private int lvl = 0;
 	
 	private Vector2 currentPosition;
 	
@@ -134,6 +131,11 @@ public class t4 : MonoBehaviour {
 	}
 	
 	void Start () {
+		string map1 = t4maps.mapsFloor[lvl];
+		string map2 = t4maps.mapsCeil[lvl];
+		int sizeX = t4maps.sizeX[lvl];
+		int sizeY = t4maps.sizeY[lvl];
+	
 		PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
 		PlaceFloor(map1, sizeX, sizeY, 0f, false);
 		PlaceSzalami(map1, sizeX, sizeY, 0f, false);
