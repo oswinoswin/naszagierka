@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class t4 : MonoBehaviour {
 	
-	public Texture texture;
-	public Texture lavaTexture;
-	public Texture heightMap;
-	public GameObject szalamiPrefab;
+	public t4person personScript;
+	public t4labyrinth labyrinthScript;
 	
 	private const float ceilingHeight = 3f;
 	private int lvl = 0;
@@ -18,7 +16,7 @@ public class t4 : MonoBehaviour {
 	public void NextLevel() {
 		lvl++;
 		print("Going to the next level");
-		//LoadLevel();
+		LoadLevel();
 	}
 	
 	public void SzalamiCollected() {
@@ -26,7 +24,8 @@ public class t4 : MonoBehaviour {
 	}
 	
 	private void LoadLevel() {
-		t4labyrinth.BuildLabyrinth(lvl, texture, lavaTexture, heightMap, szalamiPrefab);
+		personScript.Reset();
+		labyrinthScript.BuildLabyrinth(lvl);
 	}
 	
 	void Start () {

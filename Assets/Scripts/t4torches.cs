@@ -10,17 +10,19 @@ public class t4torches : MonoBehaviour {
 	
 	public GameObject torchPrefab;
 	
-	private int[] xs = {1, 2, 3, 3, 1};
-	private int[] ys = {1, 1, 1, 2, 1};
-	private char[] orientations = {'w', 'n', 'e', 's', 'w'};
-	private bool[] ceiling = {false, false, false, false, true};
+	private List<GameObject> torches = new List<GameObject>();
 	
-	private bool Validate() {
-		if(!(xs.Length == ys.Length && xs.Length == orientations.Length && xs.Length == ceiling.Length)) {
-			Debug.LogError("Bad array dimensions!");
-			return false;
+	public void PlaceTorches() {
+		ClearAll();
+		
+		int[] xs = t4maps.xs;
+		int[] ys = t4maps.ys;
+		char[] orientations = t4maps.orientations;
+		bool[] ceiling = t4maps.ceiling;
+		
+		for(int i=0; i<xs.Length; i++) {
+			PlaceTorch(xs[i], ys[i], orientations[i], ceiling[i]);
 		}
-		return true;
 	}
 	
 	private void PlaceTorch(int x, int y, char orientation, bool ceil) {
@@ -51,17 +53,16 @@ public class t4torches : MonoBehaviour {
 				break;
 		}
 		
-		Instantiate(torchPrefab, pos, rot);
+		GameObject torch = Instantiate(torchPrefab, pos, rot);
+		torches.Add(torch);
 	}
 	
-	void Start () {
-		Validate();
-		
-		for(int i=0; i<xs.Length; i++) {
-			PlaceTorch(xs[i], ys[i], orientations[i], ceiling[i]);
-		}
+	private void ClearAll() {
+		torches.ForEach(Destroy);
+		torches.Clear();
 	}
 	
-	void Update () {
+	void Start() {
+		PlaceTorches();
 	}
 }

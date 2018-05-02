@@ -65,6 +65,10 @@ public class t4person : MonoBehaviour {
 		}
 	}
 	
+	public void Reset() {
+		PlacePlayer(GetCoords(1, 1, 1f), startingRotation);
+	}
+	
 	void Start () {
 		PlacePlayer(GetCoords(1, 1, 1f), startingRotation);
 		lastAction = DateTime.Now;

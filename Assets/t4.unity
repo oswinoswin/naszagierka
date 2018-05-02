@@ -139,7 +139,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &136721626
 GameObject:
@@ -168,6 +168,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ed56c221a278f4a85ee0695a9f7006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stoneTexture: {fileID: 2800000, guid: df5b0b26b3f39374286256c3c625bd31, type: 3}
+  lavaTexture: {fileID: 2800000, guid: 001383acb8aecd6409be2758e76eb2e4, type: 3}
+  heightMap: {fileID: 2800000, guid: dde7b77411035114a85b2f99fe5c6d0b, type: 3}
+  szalamiPrefab: {fileID: 1091876675670214, guid: 588d753a3e6408e479296727e1885ac1,
+    type: 2}
+  torchesScript: {fileID: 860733783}
 --- !u!4 &136721628
 Transform:
   m_ObjectHideFlags: 0
@@ -208,11 +214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 623716879fe310843ad25084fd19e011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  texture: {fileID: 2800000, guid: df5b0b26b3f39374286256c3c625bd31, type: 3}
-  lavaTexture: {fileID: 2800000, guid: 001383acb8aecd6409be2758e76eb2e4, type: 3}
-  heightMap: {fileID: 2800000, guid: dde7b77411035114a85b2f99fe5c6d0b, type: 3}
-  szalamiPrefab: {fileID: 1091876675670214, guid: 588d753a3e6408e479296727e1885ac1,
-    type: 2}
+  personScript: {fileID: 1824742386}
+  labyrinthScript: {fileID: 136721627}
 --- !u!4 &175119510
 Transform:
   m_ObjectHideFlags: 0
@@ -224,7 +227,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &348712160 stripped
 GameObject:
@@ -416,5 +419,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

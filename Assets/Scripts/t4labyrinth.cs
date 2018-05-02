@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class t4labyrinth : MonoBehaviour {
 	
+	public Texture stoneTexture;
+	public Texture lavaTexture;
+	public Texture heightMap;
+	public GameObject szalamiPrefab;
+	public t4torches torchesScript;
+	
 	private const float ceilingHeight = 3f;
+	private List<GameObject> walls = new List<GameObject>();
+	private List<GameObject> floors = new List<GameObject>();
+	private List<GameObject> szalamis = new List<GameObject>();
 	
 	
-	private static char GetField(string map, int sizeX, int x, int y) {
+	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
 	}
 	
-	private static void PlaceFloor(string map, int sizeX, int sizeY, float h, bool isCeiling, Texture lavaTexture) {
+	private void PlaceFloor(string map, int sizeX, int sizeY, float h, bool isCeiling) {
 		for (int x = 1; x < sizeX-1; x++) {
             for (int y = 1; y < sizeY; y++) {
 				char field = GetField(map, sizeX, x, y);
@@ -23,6 +32,8 @@ public class t4labyrinth : MonoBehaviour {
 				plane.transform.position = new Vector3(x+.5f, h, y+.5f);
 				plane.transform.rotation = Quaternion.Euler(isCeiling ? 180 : 0, 0, 0);
 				plane.transform.localScale = new Vector3(.1f, 1f, .1f);		
+				floors.Add(plane);
+				
 				if(field == '_') {
 					plane.name = "Lava";
 					Material material = plane.GetComponent<Renderer>().material;
@@ -34,7 +45,7 @@ public class t4labyrinth : MonoBehaviour {
 		}
 	}
 	
-	private static void PlaceSzalami(string map, int sizeX, int sizeY, float floorH, bool isCeiling, GameObject szalamiPrefab) {
+	private void PlaceSzalami(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
 		float h = isCeiling ? floorH - .4f : floorH + .4f;
 		for (int x = 1; x < sizeX-1; x++) {
             for (int y = 1; y < sizeY; y++) {	
@@ -42,23 +53,29 @@ public class t4labyrinth : MonoBehaviour {
 				if(field == 's') {
 					GameObject szalami = Instantiate(szalamiPrefab, new Vector3(x+.5f, h, y+.5f), Quaternion.identity);
 					szalami.name = "Szalami";
+					szalamis.Add(szalami);
 				}	
 			}
 		}
 	}
 	
-	private static void PlaceOuterWalls(int sizeX, int sizeY, float h, Texture stoneTexture, Texture heightMap) {
-		PlaceWall(0, sizeX-1, 0, 0, 0, h, stoneTexture, heightMap);
-		PlaceWall(0, 0, 0, sizeY-1, 0, h, stoneTexture, heightMap);
-		PlaceWall(0, sizeX-1, sizeY-1, sizeY-1, 0, h, stoneTexture, heightMap);
-		PlaceWall(sizeX-1, sizeX-1, 0, sizeY-1, 0, h, stoneTexture, heightMap);
+	private void PlaceOuterWalls(int sizeX, int sizeY, float h) {
+		PlaceWall(0, sizeX-1, 0, 0, 0, h);
+		PlaceWall(0, 0, 0, sizeY-1, 0, h);
+		PlaceWall(0, sizeX-1, sizeY-1, sizeY-1, 0, h);
+		PlaceWall(sizeX-1, sizeX-1, 0, sizeY-1, 0, h);
 	}
 	
-	private static void PlaceWall(int x1, int x2, int y1, int y2, float h1, float h2, Texture stoneTexture, Texture heightMap) {
+	private void PlaceWall(int x1, int x2, int y1, int y2, float h1, float h2) {
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.name = "Wall";
 		cube.transform.position = new Vector3((x1 + x2 + 1)/2f, (h1 + h2)/2f, (y1 + y2 + 1)/2f);
-		cube.transform.localScale = new Vector3((x2 - x1 + 1), (h2 - h1), (y2 - y1 + 1));
+		cube.transform.localScale = new Vector3(
+			(x2 - x1 + 1) - (x1==x2 ? 0 : .05f), 
+			(h2 - h1), 
+			(y2 - y1 + 1) - (y1==y2 ? 0 : .05f));
+		walls.Add(cube);
+		
 		Material material = cube.GetComponent<Renderer>().material;
 		material.mainTexture = stoneTexture;
 		material.mainTextureScale = new Vector2(.5f, .5f);
@@ -76,7 +93,7 @@ public class t4labyrinth : MonoBehaviour {
 		mesh.uv = uvs;
 	}
 	
-	private static void PlaceLabyrinth(string map, int sizeX, int sizeY, float h, Texture stoneTexture, Texture heightMap) {
+	private void PlaceLabyrinth(string map, int sizeX, int sizeY, float h) {
 		for (int y = 1; y < sizeY-1; y++) {
 			int startWall = -1;
             for (int x = 1; x < sizeX; x++) {
@@ -86,7 +103,7 @@ public class t4labyrinth : MonoBehaviour {
 				} else if(field != '#' && startWall == x-1) {
 					startWall = -1;
 				} else if((field != '#' && startWall >= 0) || x == sizeX-1) {
-					PlaceWall(startWall, x-1, y, y, h, h+1, stoneTexture, heightMap);
+					PlaceWall(startWall, x-1, y, y, h, h+1);
 					startWall = -1;
 				}
             }
@@ -97,15 +114,18 @@ public class t4labyrinth : MonoBehaviour {
 				char field = GetField(map, sizeX, x, y);
 				if(field == '#' && startWall == -1) {
 					startWall = y;
+				} else if(field != '#' && startWall == y-1 && x>1
+							&& (GetField(map, sizeX, x-1, y-1) == '#' || GetField(map, sizeX, x+1, y-1) == '#')) {
+					startWall = -1;
 				} else if((field != '#' || y == sizeY-1) && startWall >= 0) {
-					PlaceWall(x, x, startWall, y-1, h, h+1, stoneTexture, heightMap);
+					PlaceWall(x, x, startWall, y-1, h, h+1);
 					startWall = -1;
 				}
             }
         }
 	}
 	
-	private static void PlaceDoors(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
+	private void PlaceDoors(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
 		float doorHeight = .8f;
 		float h = isCeiling ? floorH - doorHeight/2f : floorH + doorHeight/2f;
 		for (int x = 0; x < sizeX; x++) {
@@ -122,18 +142,33 @@ public class t4labyrinth : MonoBehaviour {
 		}
 	}
 	
-	public static void BuildLabyrinth(int lvl, Texture stoneTexture, Texture lavaTexture, Texture heightMap, GameObject szalamiPrefab) {
-		string map1 = t4maps.mapsFloor[lvl];
-		string map2 = t4maps.mapsCeil[lvl];
-		int sizeX = t4maps.sizeX[lvl];
-		int sizeY = t4maps.sizeY[lvl];
+	private void ClearAll() {
+		walls.ForEach(Destroy);
+		floors.ForEach(Destroy);
+		szalamis.ForEach(Destroy);
+		
+		torchesScript.PlaceTorches();
+		
+		walls.Clear();
+		floors.Clear();
+		szalamis.Clear();
+	}
 	
-		PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true, lavaTexture);
-		PlaceFloor(map1, sizeX, sizeY, 0f, false, lavaTexture);
-		PlaceSzalami(map1, sizeX, sizeY, 0f, false, szalamiPrefab);
-		PlaceOuterWalls(sizeX, sizeY, ceilingHeight, stoneTexture, heightMap);
-		PlaceLabyrinth(map1, sizeX, sizeY, 0, stoneTexture, heightMap);
-		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1, stoneTexture, heightMap);
+	public void BuildLabyrinth(int lvl) {
+		ClearAll();
+		
+		t4maps.Level levelData = t4maps.levels[lvl];
+		string map1 = levelData.mapFloor;
+		string map2 = levelData.mapCeil;
+		int sizeX = levelData.sizeX;
+		int sizeY = levelData.sizeY;
+	
+		PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
+		PlaceFloor(map1, sizeX, sizeY, 0f, false);
+		PlaceSzalami(map1, sizeX, sizeY, 0f, false);
+		PlaceOuterWalls(sizeX, sizeY, ceilingHeight);
+		PlaceLabyrinth(map1, sizeX, sizeY, 0);
+		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
 		PlaceDoors(map1, sizeX, sizeY, 0, false);
 	}
 }
