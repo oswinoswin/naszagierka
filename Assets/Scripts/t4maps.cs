@@ -61,10 +61,10 @@ public class t4maps : MonoBehaviour {
 			10, 6,
 			
 			new Torches(
-				new int[] {1, 2, 3, 3, 1}, 
-				new int[] {1, 1, 1, 2, 1}, 
-				new char[] {'w', 'n', 'e', 's', 'w'}, 
-				new bool[] {false, false, false, false, true}
+				new int[] {1, 2, 3, 3, 1, 7}, 
+				new int[] {1, 1, 1, 2, 1, 1}, 
+				new char[] {'w', 'n', 'e', 's', 'w', 'n'}, 
+				new bool[] {false, false, false, false, true, false}
 			)
 		),
 		new Level(

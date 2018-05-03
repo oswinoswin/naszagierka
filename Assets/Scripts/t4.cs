@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class t4 : MonoBehaviour {
 	
 	public t4person personScript;
 	public t4labyrinth labyrinthScript;
+	public Text scoreText;
 	
 	private const float ceilingHeight = 3f;
 	private int lvl = 0;
@@ -33,5 +35,6 @@ public class t4 : MonoBehaviour {
 	}
 	
 	void Update() {
+		scoreText.text = points.ToString();
 	}
 }
