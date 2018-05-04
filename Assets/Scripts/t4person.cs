@@ -30,7 +30,8 @@ public class t4person : MonoBehaviour {
 	
 	private void MoveUp(){
 		//print("MoveUp");
-		Physics.gravity = up;
+		//Physics.gravity = up;
+		
 		Vector3 position = player.transform.position;
 		Vector3 newPosition = new Vector3(position[0], heightUp, position[2]);
 		player.transform.position = newPosition;
@@ -38,7 +39,7 @@ public class t4person : MonoBehaviour {
 	
 		private void MoveDown(){
 		//print("MoveDown");
-		Physics.gravity = down;
+		//Physics.gravity = down;
 		Vector3 position = player.transform.position;
 		Vector3 newPosition = new Vector3(position[0], heightDown, position[2]);
 		player.transform.position = newPosition;

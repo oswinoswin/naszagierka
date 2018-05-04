@@ -14,6 +14,7 @@ public class t4labyrinth : MonoBehaviour {
 	private const float ceilingHeight = 3f;
 	private List<GameObject> walls = new List<GameObject>();
 	private List<GameObject> szalamis = new List<GameObject>();
+	private List<GameObject> flames = new List<GameObject>();
 	
 	
 	private char GetField(string map, int sizeX, int x, int y) {
@@ -117,12 +118,29 @@ public class t4labyrinth : MonoBehaviour {
 		}
 	}
 	
+	private void PlaceFlames(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
+		GameObject flame =  GameObject.Find("Flames");
+	
+		for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {	
+				char field = GetField(map, sizeX, x, y);
+				if(field == '_') {
+					GameObject new_flame = Instantiate(flame) as GameObject;
+					new_flame.transform.position = new Vector3(x+.5f, 0, y+.5f);
+					flames.Add(new_flame);
+				}	
+			}
+		}
+	}
+	
 	private void ClearAll() {
 		walls.ForEach(Destroy);
 		szalamis.ForEach(Destroy);
+		flames.ForEach(Destroy);
 		
 		walls.Clear();
 		szalamis.Clear();
+		flames.Clear();
 		
 		torchesScript.ClearAll();
 		floorScript.ClearAll();
@@ -144,6 +162,7 @@ public class t4labyrinth : MonoBehaviour {
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
 		PlaceDoors(map1, sizeX, sizeY, 0, false);
+		PlaceFlames(map1, sizeX, sizeY, 0, false);
 		
 		torchesScript.PlaceTorches(lvl);
 	}
