@@ -19,7 +19,7 @@ public class t4person : MonoBehaviour {
 	
 	
 	private Vector3 GetCoords(int x, int y, float h) {
-		print(new Vector3(x + .5f, h, y + .5f));
+		//print(new Vector3(x + .5f, h, y + .5f));
 		return new Vector3(x + .5f, h, y + .5f);
 	}
 	
@@ -83,6 +83,6 @@ public class t4person : MonoBehaviour {
 	void FixedUpdate(){
 		ToggleGravity();
 		Vector3 position = player.transform.position;
-		print(position);
+		//print(position);
 	}
 }

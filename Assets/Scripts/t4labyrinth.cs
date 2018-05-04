@@ -9,40 +9,15 @@ public class t4labyrinth : MonoBehaviour {
 	public Texture heightMap;
 	public GameObject szalamiPrefab;
 	public t4torches torchesScript;
+	public t4floor floorScript;
 	
 	private const float ceilingHeight = 3f;
 	private List<GameObject> walls = new List<GameObject>();
-	private List<GameObject> floors = new List<GameObject>();
 	private List<GameObject> szalamis = new List<GameObject>();
 	
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
-	}
-	
-	private void PlaceFloor(string map, int sizeX, int sizeY, float h, bool isCeiling) {
-		for (int x = 1; x < sizeX-1; x++) {
-            for (int y = 1; y < sizeY; y++) {
-				char field = GetField(map, sizeX, x, y);
-				if(field == '#') {
-					continue;
-				}
-				
-				GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-				plane.transform.position = new Vector3(x+.5f, h, y+.5f);
-				plane.transform.rotation = Quaternion.Euler(isCeiling ? 180 : 0, 0, 0);
-				plane.transform.localScale = new Vector3(.1f, 1f, .1f);		
-				floors.Add(plane);
-				
-				if(field == '_') {
-					plane.name = "Lava";
-					Material material = plane.GetComponent<Renderer>().material;
-					material.mainTexture = lavaTexture;	
-					material.EnableKeyword("_EMISSION");	
-					material.SetColor ("_EmissionColor", new Color(1f, .4f, .1f, 1f));
-				}	
-			}
-		}
 	}
 	
 	private void PlaceSzalami(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
@@ -144,12 +119,13 @@ public class t4labyrinth : MonoBehaviour {
 	
 	private void ClearAll() {
 		walls.ForEach(Destroy);
-		floors.ForEach(Destroy);
 		szalamis.ForEach(Destroy);
 		
 		walls.Clear();
-		floors.Clear();
 		szalamis.Clear();
+		
+		torchesScript.ClearAll();
+		floorScript.ClearAll();
 	}
 	
 	public void BuildLabyrinth(int lvl) {
@@ -161,8 +137,8 @@ public class t4labyrinth : MonoBehaviour {
 		int sizeX = levelData.sizeX;
 		int sizeY = levelData.sizeY;
 	
-		PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
-		PlaceFloor(map1, sizeX, sizeY, 0f, false);
+		floorScript.PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
+		floorScript.PlaceFloor(map1, sizeX, sizeY, 0f, false);
 		PlaceSzalami(map1, sizeX, sizeY, 0f, false);
 		PlaceOuterWalls(sizeX, sizeY, ceilingHeight);
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);

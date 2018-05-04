@@ -13,8 +13,6 @@ public class t4torches : MonoBehaviour {
 	private List<GameObject> torches = new List<GameObject>();
 	
 	public void PlaceTorches(int lvl) {
-		ClearAll();
-		
 		t4maps.Torches torchesData = t4maps.levels[lvl].torches;
 		int[] xs = torchesData.xs;
 		int[] ys = torchesData.ys;
@@ -58,12 +56,8 @@ public class t4torches : MonoBehaviour {
 		torches.Add(torch);
 	}
 	
-	private void ClearAll() {
+	public void ClearAll() {
 		torches.ForEach(Destroy);
 		torches.Clear();
-	}
-	
-	void Start() {
-		PlaceTorches(0);
 	}
 }
