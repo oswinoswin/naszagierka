@@ -4,30 +4,32 @@ using UnityEngine;
 
 public class t4floor : MonoBehaviour {
 	
-	public Texture lavaTexture;
-	
+	private Texture2D lt;
 	private List<GameObject> floors = new List<GameObject>();
+	private const int resolution = 256;
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
 	}
 	
 	private void PlaceFloorFragment(int x1, int x2, int y1, int y2, float h, bool isLava, bool isCeiling) {
-		if(!isLava) print("" + x1 + " " + x2 + " " + y1 + " " + y2);
+		h += (isCeiling ? 1f : -1f) * (isLava ? .2f : .1f);
 		
-		GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-		plane.name = "Floor";
+		GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		plane.name = isLava ? "Lava" : "Floor";
 		plane.transform.position = new Vector3((x1+x2+1)/2f, h, (y1+y2+1)/2f);
 		plane.transform.rotation = Quaternion.Euler(isCeiling ? 180 : 0, 0, 0);
-		plane.transform.localScale = new Vector3((x2-x1+1)/10f, 1f, (y2-y1+1)/10f);		
+		plane.transform.localScale = new Vector3((x2-x1+1), .2f, (y2-y1+1));		
 		floors.Add(plane);
 		
 		if(isLava) {
-			plane.name = "Lava";
 			Material material = plane.GetComponent<Renderer>().material;
-			material.mainTexture = lavaTexture;	
+			material.mainTexture = lt;	
 			material.EnableKeyword("_EMISSION");	
-			material.SetColor ("_EmissionColor", new Color(1f, .4f, .1f, 1f));
+			material.SetTexture("_EmissionMap", lt);
+			material.SetColor("_EmissionColor", Color.white);
+			material.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");	
+			material.SetFloat("_SpecularHighlights", 0f);
 		}	
 	}
 	
@@ -44,7 +46,6 @@ public class t4floor : MonoBehaviour {
 					if(x > spanStart) {
 						PlaceFloorFragment(spanStart, x-1, y, y, h, false, isCeiling);
 					}
-					PlaceFloorFragment(x, x, y, y, h, true, isCeiling);
 					spanStart = x+1;
 				}
 			}
@@ -61,6 +62,9 @@ public class t4floor : MonoBehaviour {
 			}
 		}
 
+		blt(sizeX, sizeY);
+		PlaceFloorFragment(1, sizeX-2, 1, sizeY-2, h, true, isCeiling);
+
 		if(fullWidthColStart < sizeY-1) {
 			PlaceFloorFragment(1, sizeX-2, fullWidthColStart, sizeY-2, h, false, isCeiling);
 		}
@@ -69,5 +73,28 @@ public class t4floor : MonoBehaviour {
 	public void ClearAll() {
 		floors.ForEach(Destroy);
 		floors.Clear();
+	}
+	
+	private Texture2D blt(int sizeX, int sizeY) {
+		Texture2D texture = new Texture2D(resolution, resolution, TextureFormat.RGB24, true);
+		FillTexture(texture, sizeX, sizeY);
+		lt = texture;
+		return texture;
+	}
+
+	private void FillTexture (Texture2D texture, int sizeX, int sizeY) {
+		float scaleX = 16f;
+		float scaleY = scaleX * (float)sizeY / (float)sizeX;
+		
+		for (int y = 0; y < resolution; y++) {
+			for (int x = 0; x < resolution; x++) {
+				float noise = Mathf.PerlinNoise((float)x * scaleX / resolution, (float)y * scaleY / resolution);
+				noise = noise*3f-.8f;
+				if(noise>1) noise = 1f;
+				if(noise<0) noise = 0f;
+				texture.SetPixel(x, y, new Color(noise, noise/3f, 0));
+			}
+		}
+		texture.Apply();
 	}
 }
