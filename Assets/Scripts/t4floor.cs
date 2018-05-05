@@ -5,8 +5,10 @@ using UnityEngine;
 public class t4floor : MonoBehaviour {
 	
 	private Texture2D lt;
+	private Material material;
 	private List<GameObject> floors = new List<GameObject>();
-	private const int resolution = 256;
+	private const int resolution = 512;
+	private Vector2 currentOffset = new Vector2(0, 0);
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
@@ -23,7 +25,7 @@ public class t4floor : MonoBehaviour {
 		floors.Add(plane);
 		
 		if(isLava) {
-			Material material = plane.GetComponent<Renderer>().material;
+			material = plane.GetComponent<Renderer>().material;
 			material.mainTexture = lt;	
 			material.EnableKeyword("_EMISSION");	
 			material.SetTexture("_EmissionMap", lt);
@@ -88,13 +90,28 @@ public class t4floor : MonoBehaviour {
 		
 		for (int y = 0; y < resolution; y++) {
 			for (int x = 0; x < resolution; x++) {
-				float noise = Mathf.PerlinNoise((float)x * scaleX / resolution, (float)y * scaleY / resolution);
+				float noise1 = Mathf.PerlinNoise((float)x * scaleX / resolution, (float)y * scaleY / resolution);
+				float noise2 = Mathf.PerlinNoise((float)x * scaleX * 2f / resolution, (float)y * scaleY * 2f / resolution) * 2f;
+				float noise = noise1 > noise2 ? noise2 : noise1;
+				if(noise > .5f) noise = 1-noise;
+				
 				noise = noise*3f-.8f;
 				if(noise>1) noise = 1f;
 				if(noise<0) noise = 0f;
-				texture.SetPixel(x, y, new Color(noise, noise/3f, 0));
+				if(noise<.2f) noise = 0f;
+				
+				float noiseG = noise;
+				if(noiseG > .6f) noiseG = 1f;
+				noiseG /= 2f;
+					
+				texture.SetPixel(x, y, new Color(noise, noiseG, 0));
 			}
 		}
 		texture.Apply();
+	}
+	
+	void Update() {
+		currentOffset += new Vector2(.05f, .05f) * Time.deltaTime;
+		material.SetTextureOffset("_MainTex", currentOffset);
 	}
 }

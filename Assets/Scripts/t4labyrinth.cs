@@ -5,8 +5,9 @@ using UnityEngine;
 public class t4labyrinth : MonoBehaviour {
 	
 	public Texture stoneTexture;
-	public Texture lavaTexture;
 	public Texture heightMap;
+	public Texture doorTexture;
+	public Texture doorHeightMap;
 	public GameObject szalamiPrefab;
 	public t4torches torchesScript;
 	public t4floor floorScript;
@@ -36,10 +37,10 @@ public class t4labyrinth : MonoBehaviour {
 	}
 	
 	private void PlaceOuterWalls(int sizeX, int sizeY, float h) {
-		PlaceWall(0, sizeX-1, 0, 0, 0, h);
-		PlaceWall(0, 0, 0, sizeY-1, 0, h);
-		PlaceWall(0, sizeX-1, sizeY-1, sizeY-1, 0, h);
-		PlaceWall(sizeX-1, sizeX-1, 0, sizeY-1, 0, h);
+		PlaceWall(0, sizeX-1, 0, 0, -.2f, h);
+		PlaceWall(0, 0, 0, sizeY-1, -.2f, h);
+		PlaceWall(0, sizeX-1, sizeY-1, sizeY-1, -.2f, h);
+		PlaceWall(sizeX-1, sizeX-1, 0, sizeY-1, -.2f, h);
 	}
 	
 	private void PlaceWall(int x1, int x2, int y1, int y2, float h1, float h2) {
@@ -55,7 +56,6 @@ public class t4labyrinth : MonoBehaviour {
 		Material material = cube.GetComponent<Renderer>().material;
 		material.mainTexture = stoneTexture;
 		material.mainTextureScale = new Vector2(.5f, .5f);
-		
 		material.EnableKeyword("_NORMALMAP");
 		material.SetTexture("_BumpMap", heightMap);
 		material.SetFloat("_BumpScale", 0.5f);
@@ -113,6 +113,15 @@ public class t4labyrinth : MonoBehaviour {
 					cube.name = "Door";
 					cube.transform.position = new Vector3(x+.5f, h, y+.5f);
 					cube.transform.localScale = new Vector3((onVerticalWall ? 1.06f : .6f), doorHeight, (onVerticalWall ? .6f : 1.06f));
+					
+					Material material = cube.GetComponent<Renderer>().material;
+					material.mainTexture = doorTexture;
+					material.EnableKeyword("_EMISSION");	
+					material.SetTexture("_EmissionMap", doorTexture);
+					material.SetColor("_EmissionColor", new Color(.5f, .5f, .5f, .1f));
+					material.EnableKeyword("_NORMALMAP");
+					material.SetTexture("_BumpMap", doorHeightMap);
+					material.SetFloat("_BumpScale", 0.5f);
 				}	
 			}
 		}

@@ -61,7 +61,10 @@ public class t4maps : MonoBehaviour {
 			9, 6,
 			
 			new Torch[] {
-				new Torch(1, 1, 'n', false)
+				new Torch(1, 1, 'n', false),
+				new Torch(1, 4, 's', false),
+				new Torch(7, 1, 'n', false),
+				new Torch(7, 4, 's', false)
 			}
 		),
 		new Level(
