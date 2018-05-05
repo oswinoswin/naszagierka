@@ -650,7 +650,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1978371461
+  randomSeed: -1446761652
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4125,7 +4125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41d0ce13f81bc4488192ddd0a75d007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lavaTexture: {fileID: 0}
 --- !u!4 &2099141091
 Transform:
   m_ObjectHideFlags: 0

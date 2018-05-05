@@ -9,9 +9,9 @@ public class t4maps : MonoBehaviour {
 		public string mapCeil;
 		public int sizeX;
 		public int sizeY;
-		public Torches torches;
+		public Torch[] torches;
 		
-		public Level(string amapFloor, string amapCeil, int asizeX, int asizeY, Torches atorches) {
+		public Level(string amapFloor, string amapCeil, int asizeX, int asizeY, Torch[] atorches) {
 			mapFloor = amapFloor;
 			mapCeil = amapCeil;
 			sizeX = asizeX;
@@ -20,16 +20,16 @@ public class t4maps : MonoBehaviour {
 		}
 	}
 	
-	public class Torches {		
-		public int[] xs;
-		public int[] ys;
-		public char[] orientations;
-		public bool[] ceiling;
+	public class Torch {		
+		public int x;
+		public int y;
+		public char orientation;
+		public bool ceiling;
 		
-		public Torches(int[] axs, int[] ays, char[] aorientations, bool[] aceiling) {
-			xs = axs;
-			ys = ays;
-			orientations = aorientations;
+		public Torch(int ax, int ay, char aorientation, bool aceiling) {
+			x = ax;
+			y = ay;
+			orientation = aorientation;
 			ceiling = aceiling;
 		}
 	}
@@ -43,6 +43,27 @@ public class t4maps : MonoBehaviour {
 	*/
 	
 	public static Level[] levels = {
+		new Level(
+			"#########" +
+			"#  __#  #" +
+			"#  ___  D" +
+			"#  _ _  #" +
+			"#  ___  #" +
+			"#########",
+			
+			"#########" +
+			"#       #" +
+			"#       #" +
+			"#       #" +
+			"#       #" +
+			"#########",
+			
+			9, 6,
+			
+			new Torch[] {
+				new Torch(1, 1, 'n', false)
+			}
+		),
 		new Level(
 			"##########" +
 			"#   #  s##" +
@@ -60,12 +81,14 @@ public class t4maps : MonoBehaviour {
 			
 			10, 6,
 			
-			new Torches(
-				new int[] {1, 2, 3, 3, 1, 7}, 
-				new int[] {1, 1, 1, 2, 1, 1}, 
-				new char[] {'w', 'n', 'e', 's', 'w', 'n'}, 
-				new bool[] {false, false, false, false, true, false}
-			)
+			new Torch[] {
+				new Torch(1, 1, 'w', false),
+				new Torch(2, 1, 'n', false),
+				new Torch(3, 1, 'e', false),
+				new Torch(3, 2, 's', false),
+				new Torch(1, 1, 'w', true),
+				new Torch(7, 1, 'n', false)
+			}
 		),
 		new Level(
 			"####" +
@@ -80,12 +103,9 @@ public class t4maps : MonoBehaviour {
 			
 			4, 4,
 			
-			new Torches(
-				new int[] {2}, 
-				new int[] {2}, 
-				new char[] {'e'}, 
-				new bool[] {true}
-			)
+			new Torch[] {
+				new Torch(2, 2, 'e', true)
+			}
 		)
 	};
 }

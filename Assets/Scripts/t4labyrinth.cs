@@ -74,7 +74,7 @@ public class t4labyrinth : MonoBehaviour {
 			int startWall = -1;
             for (int x = 1; x < sizeX; x++) {
 				char field = GetField(map, sizeX, x, y);
-				if(field == '#' && startWall == -1) {
+				if((field == '#' || field == 'D') && startWall == -1) {
 					startWall = x;
 				} else if(field != '#' && startWall == x-1) {
 					startWall = -1;

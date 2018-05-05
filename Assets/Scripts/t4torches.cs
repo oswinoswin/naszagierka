@@ -13,27 +13,24 @@ public class t4torches : MonoBehaviour {
 	private List<GameObject> torches = new List<GameObject>();
 	
 	public void PlaceTorches(int lvl) {
-		t4maps.Torches torchesData = t4maps.levels[lvl].torches;
-		int[] xs = torchesData.xs;
-		int[] ys = torchesData.ys;
-		char[] orientations = torchesData.orientations;
-		bool[] ceiling = torchesData.ceiling;
+		t4maps.Torch[] torchesData = t4maps.levels[lvl].torches;
 		
-		for(int i=0; i<xs.Length; i++) {
-			PlaceTorch(xs[i], ys[i], orientations[i], ceiling[i]);
+		for(int i=0; i<torchesData.Length; i++) {
+			PlaceTorch(torchesData[i]);
 		}
 	}
 	
-	private void PlaceTorch(int x, int y, char orientation, bool ceil) {
-		float hRelative = .2f;
-		float h = ceil ? 3f - hRelative : hRelative;
-		int angleRelative = 30;
-		int angle = ceil ? 180 - angleRelative : angleRelative;
+	private void PlaceTorch(t4maps.Torch t) {
 		
-		Vector3 pos = new Vector3(x + .5f, h, y + .5f);
+		float hRelative = .2f;
+		float h = t.ceiling ? 3f - hRelative : hRelative;
+		int angleRelative = 30;
+		int angle = t.ceiling ? 180 - angleRelative : angleRelative;
+		
+		Vector3 pos = new Vector3(t.x + .5f, h, t.y + .5f);
 		Quaternion rot = Quaternion.identity;
 		
-		switch(orientation) {
+		switch(t.orientation) {
 			case 'n':
 				pos[2] -= .6f;
 				rot = Quaternion.Euler(angle, 0, 0);
