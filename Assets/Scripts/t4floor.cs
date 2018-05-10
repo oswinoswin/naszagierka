@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class t4floor : MonoBehaviour {
 	
+	public Texture floorTexture;
+	public Texture heightMap;
+	
 	private Texture2D lt;
 	private Material material;
 	private List<GameObject> floors = new List<GameObject>();
 	private const int resolution = 512;
-	private Vector2 currentOffset = new Vector2(0, 0);
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
@@ -30,9 +32,29 @@ public class t4floor : MonoBehaviour {
 			material.EnableKeyword("_EMISSION");	
 			material.SetTexture("_EmissionMap", lt);
 			material.SetColor("_EmissionColor", Color.white);
+			material.EnableKeyword("_PARALLAXMAP");
+			material.SetTexture("_ParallaxMap", lt);
+			material.SetFloat("_Parallax", -.5f);
 			material.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");	
 			material.SetFloat("_SpecularHighlights", 0f);
-		}	
+			material.EnableKeyword("_GLOSSYREFLECTIONS_OFF");	
+			material.SetFloat("_GlossyReflections", 0f);
+		} else {
+			material = plane.GetComponent<Renderer>().material;
+			material.mainTexture = floorTexture;
+			material.EnableKeyword("_NORMALMAP");
+			material.SetTexture("_BumpMap", heightMap);
+			material.SetFloat("_BumpScale", 0.5f);
+			material.EnableKeyword("_GLOSSYREFLECTIONS_OFF");	
+			material.SetFloat("_GlossyReflections", 0f);
+					
+			Mesh mesh = plane.GetComponent<MeshFilter>().mesh;
+			for(int i=0;i<24;i++) print(i + ": " + mesh.uv[i][0] + "" + mesh.uv[i][1] + " ");
+			Vector2[] uvs = mesh.uv;
+			uvs[5][0] = uvs[9][0] = (x2 - x1 + 1);
+			uvs[4][1] = uvs[5][1] = (y2 - y1 + 1);
+			mesh.uv = uvs;
+		}
 	}
 	
 	public void PlaceFloor(string map, int sizeX, int sizeY, float h, bool isCeiling) {
@@ -85,14 +107,16 @@ public class t4floor : MonoBehaviour {
 	}
 
 	private void FillTexture (Texture2D texture, int sizeX, int sizeY) {
-		float scaleX = 16f;
+		float scaleX = 20f;
 		float scaleY = scaleX * (float)sizeY / (float)sizeX;
 		
-		for (int y = 0; y < resolution; y++) {
+		for (int y2 = 0; y2 < resolution; y2++) {
 			for (int x = 0; x < resolution; x++) {
+				int y = (int)(y2 + 5f*Mathf.Sin((float)y2/25f))%resolution;
 				float noise1 = Mathf.PerlinNoise((float)x * scaleX / resolution, (float)y * scaleY / resolution);
 				float noise2 = Mathf.PerlinNoise((float)x * scaleX * 2f / resolution, (float)y * scaleY * 2f / resolution) * 2f;
-				float noise = noise1 > noise2 ? noise2 : noise1;
+				float noise3 = Mathf.PerlinNoise((float)x * scaleX * 2f / resolution, (float)y * scaleY * 2f / resolution) * 2f;
+				float noise = Mathf.Min(noise1, noise2);
 				if(noise > .5f) noise = 1-noise;
 				
 				noise = noise*3f-.8f;
@@ -103,15 +127,19 @@ public class t4floor : MonoBehaviour {
 				float noiseG = noise;
 				if(noiseG > .6f) noiseG = 1f;
 				noiseG /= 2f;
+				
+				if(noise > .2f) noise += (noise-.2f) * .1f;
+				if(noise3 > .45f && noise3 < .55f && noise == 0f) noise = 1f - Mathf.Abs(noise3 - .5f) * 15; 
+				
+				float gtor = Random.Range(0f, .3f);
+				if(noiseG > .1f) {
+					noise += gtor;
+					noiseG -= gtor;
+				}
 					
-				texture.SetPixel(x, y, new Color(noise, noiseG, 0));
+				texture.SetPixel(x, y2, new Color(noise, noiseG, 0));
 			}
 		}
 		texture.Apply();
-	}
-	
-	void Update() {
-		currentOffset += new Vector2(.05f, .05f) * Time.deltaTime;
-		material.SetTextureOffset("_MainTex", currentOffset);
 	}
 }

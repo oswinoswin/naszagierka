@@ -9,31 +9,43 @@ public class t4labyrinth : MonoBehaviour {
 	public Texture doorTexture;
 	public Texture doorHeightMap;
 	public GameObject szalamiPrefab;
+	public GameObject spikesPrefab;
 	public t4torches torchesScript;
 	public t4floor floorScript;
 	
 	private const float ceilingHeight = 3f;
 	private List<GameObject> walls = new List<GameObject>();
 	private List<GameObject> szalamis = new List<GameObject>();
+	private List<GameObject> spikesBases = new List<GameObject>();
 	private List<GameObject> flames = new List<GameObject>();
+	private List<GameObject> doors = new List<GameObject>();
+	private Dictionary<int, GameObject> coordsSpikes = new Dictionary<int, GameObject>();
 	
 	
 	private char GetField(string map, int sizeX, int x, int y) {
 		return map[y * sizeX + x];
 	}
 	
-	private void PlaceSzalami(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
+	private void PlaceSzalami(int x, int y, float floorH, bool isCeiling) {
 		float h = isCeiling ? floorH - .4f : floorH + .4f;
-		for (int x = 1; x < sizeX-1; x++) {
-            for (int y = 1; y < sizeY; y++) {	
-				char field = GetField(map, sizeX, x, y);
-				if(field == 's') {
-					GameObject szalami = Instantiate(szalamiPrefab, new Vector3(x+.5f, h, y+.5f), Quaternion.identity);
-					szalami.name = "Szalami";
-					szalamis.Add(szalami);
-				}	
-			}
-		}
+		GameObject szalami = Instantiate(szalamiPrefab, new Vector3(x+.5f, h, y+.5f), Quaternion.identity);
+		szalami.name = "Szalami";
+		szalamis.Add(szalami);	
+	}
+	
+	private void PlaceSpikes(int x, int y, float floorH, bool isCeiling, int id) {
+		float oppositeH = ceilingHeight - floorH;
+		
+		GameObject spike = Instantiate(spikesPrefab, new Vector3(x+.5f, floorH, y+.5f), Quaternion.Euler(isCeiling ? 90 : -90, 0, 90));
+		spike.name = "Spikes";
+		coordsSpikes[id] = spike;	
+		print(coordsSpikes[id]);
+		
+		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		cube.name = "SpikesBase";
+		cube.transform.position = new Vector3(x+.5f, floorH, y+.5f);
+		cube.transform.localScale = new Vector3(.8f, .1f, .8f);
+		spikesBases.Add(cube);
 	}
 	
 	private void PlaceOuterWalls(int sizeX, int sizeY, float h) {
@@ -101,28 +113,35 @@ public class t4labyrinth : MonoBehaviour {
         }
 	}
 	
-	private void PlaceDoors(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
+	private void PlaceDoor(int x, int y, int sizeX, float floorH, bool isCeiling) {
 		float doorHeight = .8f;
 		float h = isCeiling ? floorH - doorHeight/2f : floorH + doorHeight/2f;
+		bool onVerticalWall = x == 0 || x == sizeX-1;
+		
+		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		cube.name = "Door";
+		cube.transform.position = new Vector3(x+.5f, h, y+.5f);
+		cube.transform.localScale = new Vector3((onVerticalWall ? 1.06f : .6f), doorHeight, (onVerticalWall ? .6f : 1.06f));
+		doors.Add(cube);
+		
+		Material material = cube.GetComponent<Renderer>().material;
+		material.mainTexture = doorTexture;
+		material.EnableKeyword("_EMISSION");	
+		material.SetTexture("_EmissionMap", doorTexture);
+		material.SetColor("_EmissionColor", new Color(.5f, .5f, .5f, .1f));
+		material.EnableKeyword("_NORMALMAP");
+		material.SetTexture("_BumpMap", doorHeightMap);
+		material.SetFloat("_BumpScale", 0.5f);
+		
+	}
+	
+	private void PlaceObjects(string map, int sizeX, int sizeY, float floorH, bool isCeiling) {
 		for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {	
 				char field = GetField(map, sizeX, x, y);
-				if(field == 'D') {
-					bool onVerticalWall = x == 0 || x == sizeX-1;
-					GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-					cube.name = "Door";
-					cube.transform.position = new Vector3(x+.5f, h, y+.5f);
-					cube.transform.localScale = new Vector3((onVerticalWall ? 1.06f : .6f), doorHeight, (onVerticalWall ? .6f : 1.06f));
-					
-					Material material = cube.GetComponent<Renderer>().material;
-					material.mainTexture = doorTexture;
-					material.EnableKeyword("_EMISSION");	
-					material.SetTexture("_EmissionMap", doorTexture);
-					material.SetColor("_EmissionColor", new Color(.5f, .5f, .5f, .1f));
-					material.EnableKeyword("_NORMALMAP");
-					material.SetTexture("_BumpMap", doorHeightMap);
-					material.SetFloat("_BumpScale", 0.5f);
-				}	
+				if(field == 'D') PlaceDoor(x, y, sizeX, floorH, isCeiling);
+				else if(field == 's') PlaceSzalami(x, y, floorH, isCeiling);
+				else if(field == 'v') PlaceSpikes(x, y, floorH, isCeiling, y*sizeX + x);
 			}
 		}
 	}
@@ -145,11 +164,15 @@ public class t4labyrinth : MonoBehaviour {
 	private void ClearAll() {
 		walls.ForEach(Destroy);
 		szalamis.ForEach(Destroy);
+		spikesBases.ForEach(Destroy);
 		flames.ForEach(Destroy);
+		doors.ForEach(Destroy);
 		
 		walls.Clear();
 		szalamis.Clear();
+		spikesBases.Clear();
 		flames.Clear();
+		doors.Clear();
 		
 		torchesScript.ClearAll();
 		floorScript.ClearAll();
@@ -166,11 +189,11 @@ public class t4labyrinth : MonoBehaviour {
 	
 		floorScript.PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
 		floorScript.PlaceFloor(map1, sizeX, sizeY, 0f, false);
-		PlaceSzalami(map1, sizeX, sizeY, 0f, false);
 		PlaceOuterWalls(sizeX, sizeY, ceilingHeight);
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);
-		PlaceDoors(map1, sizeX, sizeY, 0, false);
+		PlaceObjects(map1, sizeX, sizeY, 0, false);
+		PlaceObjects(map2, sizeX, sizeY, ceilingHeight, true);
 		PlaceFlames(map1, sizeX, sizeY, 0, false);
 		
 		torchesScript.PlaceTorches(lvl);

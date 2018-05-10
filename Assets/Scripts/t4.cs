@@ -10,7 +10,7 @@ public class t4 : MonoBehaviour {
 	public Text scoreText;
 	
 	private const float ceilingHeight = 3f;
-	private int lvl = 0;
+	private int lvl = 1;
 	private int points = 0;
 	
 	private Vector2 currentPosition;
