@@ -9,17 +9,16 @@ public class t4labyrinth : MonoBehaviour {
 	public Texture doorTexture;
 	public Texture doorHeightMap;
 	public GameObject szalamiPrefab;
-	public GameObject spikesPrefab;
+	
 	public t4torches torchesScript;
+	public t4spikes spikesScript;
 	public t4floor floorScript;
 	
 	private const float ceilingHeight = 3f;
 	private List<GameObject> walls = new List<GameObject>();
 	private List<GameObject> szalamis = new List<GameObject>();
-	private List<GameObject> spikesBases = new List<GameObject>();
 	private List<GameObject> flames = new List<GameObject>();
 	private List<GameObject> doors = new List<GameObject>();
-	private Dictionary<int, GameObject> coordsSpikes = new Dictionary<int, GameObject>();
 	
 	
 	private char GetField(string map, int sizeX, int x, int y) {
@@ -31,21 +30,6 @@ public class t4labyrinth : MonoBehaviour {
 		GameObject szalami = Instantiate(szalamiPrefab, new Vector3(x+.5f, h, y+.5f), Quaternion.identity);
 		szalami.name = "Szalami";
 		szalamis.Add(szalami);	
-	}
-	
-	private void PlaceSpikes(int x, int y, float floorH, bool isCeiling, int id) {
-		float oppositeH = ceilingHeight - floorH;
-		
-		GameObject spike = Instantiate(spikesPrefab, new Vector3(x+.5f, floorH, y+.5f), Quaternion.Euler(isCeiling ? 90 : -90, 0, 90));
-		spike.name = "Spikes";
-		coordsSpikes[id] = spike;	
-		print(coordsSpikes[id]);
-		
-		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		cube.name = "SpikesBase";
-		cube.transform.position = new Vector3(x+.5f, floorH, y+.5f);
-		cube.transform.localScale = new Vector3(.8f, .1f, .8f);
-		spikesBases.Add(cube);
 	}
 	
 	private void PlaceOuterWalls(int sizeX, int sizeY, float h) {
@@ -141,7 +125,7 @@ public class t4labyrinth : MonoBehaviour {
 				char field = GetField(map, sizeX, x, y);
 				if(field == 'D') PlaceDoor(x, y, sizeX, floorH, isCeiling);
 				else if(field == 's') PlaceSzalami(x, y, floorH, isCeiling);
-				else if(field == 'v') PlaceSpikes(x, y, floorH, isCeiling, y*sizeX + x);
+				else if(field == 'v') spikesScript.PlaceSpikes(x, y, floorH, isCeiling, y*sizeX + x);
 			}
 		}
 	}
@@ -164,17 +148,16 @@ public class t4labyrinth : MonoBehaviour {
 	private void ClearAll() {
 		walls.ForEach(Destroy);
 		szalamis.ForEach(Destroy);
-		spikesBases.ForEach(Destroy);
 		flames.ForEach(Destroy);
 		doors.ForEach(Destroy);
 		
 		walls.Clear();
 		szalamis.Clear();
-		spikesBases.Clear();
 		flames.Clear();
 		doors.Clear();
 		
 		torchesScript.ClearAll();
+		spikesScript.ClearAll();
 		floorScript.ClearAll();
 	}
 	

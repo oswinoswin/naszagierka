@@ -49,7 +49,6 @@ public class t4floor : MonoBehaviour {
 			material.SetFloat("_GlossyReflections", 0f);
 					
 			Mesh mesh = plane.GetComponent<MeshFilter>().mesh;
-			for(int i=0;i<24;i++) print(i + ": " + mesh.uv[i][0] + "" + mesh.uv[i][1] + " ");
 			Vector2[] uvs = mesh.uv;
 			uvs[5][0] = uvs[9][0] = (x2 - x1 + 1);
 			uvs[4][1] = uvs[5][1] = (y2 - y1 + 1);
