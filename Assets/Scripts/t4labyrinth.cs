@@ -11,6 +11,7 @@ public class t4labyrinth : MonoBehaviour {
 	public GameObject szalamiPrefab;
 	
 	public t4torches torchesScript;
+	public t4vases vasesScript;
 	public t4spikes spikesScript;
 	public t4floor floorScript;
 	
@@ -180,5 +181,6 @@ public class t4labyrinth : MonoBehaviour {
 		PlaceFlames(map1, sizeX, sizeY, 0, false);
 		
 		torchesScript.PlaceTorches(lvl);
+		vasesScript.PlaceVases(lvl);
 	}
 }

@@ -10,13 +10,15 @@ public class t4maps : MonoBehaviour {
 		public int sizeX;
 		public int sizeY;
 		public Torch[] torches;
+		public Vase[] vases;
 		
-		public Level(string amapFloor, string amapCeil, int asizeX, int asizeY, Torch[] atorches) {
+		public Level(string amapFloor, string amapCeil, int asizeX, int asizeY, Torch[] atorches, Vase[] avases) {
 			mapFloor = amapFloor;
 			mapCeil = amapCeil;
 			sizeX = asizeX;
 			sizeY = asizeY;
 			torches = atorches;
+			vases = avases;
 		}
 	}
 	
@@ -27,6 +29,20 @@ public class t4maps : MonoBehaviour {
 		public bool ceiling;
 		
 		public Torch(int ax, int ay, char aorientation, bool aceiling) {
+			x = ax;
+			y = ay;
+			orientation = aorientation;
+			ceiling = aceiling;
+		}
+	}
+	
+	public class Vase {		
+		public int x;
+		public int y;
+		public char orientation;
+		public bool ceiling;
+		
+		public Vase(int ax, int ay, char aorientation, bool aceiling) {
 			x = ax;
 			y = ay;
 			orientation = aorientation;
@@ -65,6 +81,8 @@ public class t4maps : MonoBehaviour {
 				new Torch(1, 4, 's', false),
 				new Torch(7, 1, 'n', false),
 				new Torch(7, 4, 's', false)
+			},
+			new Vase[] {
 			}
 		),
 		new Level(
@@ -91,6 +109,9 @@ public class t4maps : MonoBehaviour {
 				new Torch(3, 2, 's', false),
 				new Torch(1, 1, 'w', true),
 				new Torch(7, 1, 'n', false)
+			},
+			new Vase[] {
+				new Vase(2, 2, 's', false)
 			}
 		),
 		new Level(
@@ -108,6 +129,8 @@ public class t4maps : MonoBehaviour {
 			
 			new Torch[] {
 				new Torch(2, 2, 'e', true)
+			},
+			new Vase[] {
 			}
 		)
 	};
