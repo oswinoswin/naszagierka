@@ -28,7 +28,14 @@ public class t4spikes : MonoBehaviour {
 	}
 	
 	private float animateSpikesF(float t) {
-		return Mathf.Sin(Time.realtimeSinceStartup) + 1f + ceilingHeight;
+		float k1 = 6f;
+		float k2 = 4f;
+		float x = t/k1 - Mathf.Floor(t/k1);
+		float res = Mathf.Min(k2*x, 1-k2*x) + (k2 - 1f)*x;
+		res = Mathf.Min(1.5f*res, 1f);
+		res -= 1f;
+		print(res);
+		return ceilingHeight-res;
 	}
 	
 	private void animateSpikes() {
