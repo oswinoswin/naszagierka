@@ -30,19 +30,19 @@ public class t4person : MonoBehaviour {
 	
 	private void MoveUp(){
 		//print("MoveUp");
-		//Physics.gravity = up;
+		Physics.gravity = up;
 		
-		Vector3 position = player.transform.position;
-		Vector3 newPosition = new Vector3(position[0], heightUp, position[2]);
-		player.transform.position = newPosition;
+		//Vector3 position = player.transform.position;
+		//Vector3 newPosition = new Vector3(position[0], heightUp, position[2]);
+		//player.transform.position = newPosition;
 	}
 	
 		private void MoveDown(){
 		//print("MoveDown");
-		//Physics.gravity = down;
-		Vector3 position = player.transform.position;
-		Vector3 newPosition = new Vector3(position[0], heightDown, position[2]);
-		player.transform.position = newPosition;
+		Physics.gravity = down;
+		//Vector3 position = player.transform.position;
+		//Vector3 newPosition = new Vector3(position[0], heightDown, position[2]);
+		//player.transform.position = newPosition;
 	}
 	
 	private void ToggleGravity(){
@@ -84,6 +84,6 @@ public class t4person : MonoBehaviour {
 	void FixedUpdate(){
 		ToggleGravity();
 		Vector3 position = player.transform.position;
-		//print(position);
+		print(position);
 	}
 }

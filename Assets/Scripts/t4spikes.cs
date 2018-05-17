@@ -18,7 +18,7 @@ public class t4spikes : MonoBehaviour {
 		spike.name = "Spikes";
 		coordsSpikes[id] = spike;	
 		spikes.Add(spike);
-		print(coordsSpikes[id]);
+		//print(coordsSpikes[id]);
 		
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.name = "SpikesBase";
@@ -34,7 +34,7 @@ public class t4spikes : MonoBehaviour {
 		float res = Mathf.Min(k2*x, 1-k2*x) + (k2 - 1f)*x;
 		res = Mathf.Min(1.5f*res, 1f);
 		res -= 1f;
-		print(res);
+		//print(res);
 		return ceilingHeight-res;
 	}
 	

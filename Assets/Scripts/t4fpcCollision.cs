@@ -7,7 +7,7 @@ public class t4fpcCollision : MonoBehaviour {
 	public t4 main;
 	
 	void OnTriggerEnter(Collider other) {
-		//print("Collision with: " + other.name);
+		print("Collision with: " + other.name);
 		
 		if(other.name == "Lava" || other.name == "Spikes") {
 			t4person.PlacePlayer(new Vector3(1.5f, 1.5f, 1f), new Quaternion(0, 0, 0, 1));
