@@ -61,6 +61,36 @@ public class t4maps : MonoBehaviour {
 	public static Level[] levels = {
 		new Level(
 			"#########" +
+			"#  ___  D" +
+			"#  v v  #" +
+			"#  ___  #" +
+			"#########",
+			
+			"#########" +
+			"#       #" +
+			"#       #" +
+			"#       #" +
+			"#########",
+			
+			9, 5,
+			
+			new Torch[] {
+				new Torch(1, 1, 'n', false),
+				new Torch(1, 3, 's', false),
+				new Torch(3, 1, 'n', false),
+				new Torch(3, 3, 's', false),
+				new Torch(5, 1, 'n', false),
+				new Torch(5, 3, 's', false),
+				new Torch(7, 1, 'n', false),
+				new Torch(7, 3, 's', false)
+			},
+			new Vase[] {
+				new Vase(2, 1, 'w', false),
+				new Vase(7, 3, 's', false)
+			}
+		),
+		new Level(
+			"#########" +
 			"#  __#  #" +
 			"#  ___  D" +
 			"#  _ _  #" +
@@ -81,6 +111,32 @@ public class t4maps : MonoBehaviour {
 				new Torch(1, 4, 's', false),
 				new Torch(7, 1, 'n', false),
 				new Torch(7, 4, 's', false)
+			},
+			new Vase[] {
+			}
+		),
+		new Level(
+			"#########" +
+			"#       #" +
+			"#######v#" +
+			"# #   v #" +
+			"#_#######" +
+			"#____   D" +
+			"#########",
+			
+			"#########" +
+			"####___##" +
+			"### #####" +
+			"#   #_###" +
+			"# ### ###" +
+			"#      ##" +
+			"#########",
+			
+			9, 7,
+			
+			new Torch[] {
+				new Torch(2, 1, 'n', false),
+				new Torch(7, 1, 'e', false)
 			},
 			new Vase[] {
 			}

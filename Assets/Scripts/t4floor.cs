@@ -42,6 +42,9 @@ public class t4floor : MonoBehaviour {
 		} else {
 			material = plane.GetComponent<Renderer>().material;
 			material.mainTexture = floorTexture;
+			material.EnableKeyword("_EMISSION");	
+			material.SetTexture("_EmissionMap", floorTexture);
+			material.SetColor("_EmissionColor", new Color(.1f, .1f, .1f, .1f));
 			material.EnableKeyword("_NORMALMAP");
 			material.SetTexture("_BumpMap", heightMap);
 			material.SetFloat("_BumpScale", 0.5f);

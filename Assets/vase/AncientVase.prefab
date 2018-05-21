@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 33838417862099986}
   - component: {fileID: 23891303537467198}
   - component: {fileID: 95512637457963000}
+  - component: {fileID: 65883443713264878}
+  - component: {fileID: 54351353030362204}
   m_Layer: 0
   m_Name: AncientVase
   m_TagString: Untagged
@@ -83,6 +85,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1585465730535664}
   m_Mesh: {fileID: 4300000, guid: f56ec1f2404a6af4a86782280a8f8bf8, type: 3}
+--- !u!54 &54351353030362204
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1585465730535664}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!65 &65883443713264878
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1585465730535664}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.527361, y: 0.69792694, z: 0.61691594}
+  m_Center: {x: 0.00000049173826, y: 0.34896347, z: 0}
 --- !u!95 &95512637457963000
 Animator:
   serializedVersion: 3

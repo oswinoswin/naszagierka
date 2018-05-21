@@ -46,7 +46,7 @@ public class t4labyrinth : MonoBehaviour {
 		cube.transform.position = new Vector3((x1 + x2 + 1)/2f, (h1 + h2)/2f, (y1 + y2 + 1)/2f);
 		cube.transform.localScale = new Vector3(
 			(x2 - x1 + 1) - (x1==x2 ? 0 : .05f), 
-			(h2 - h1), 
+			(h2 - h1) * Random.Range(1f, 1.2f), 
 			(y2 - y1 + 1) - (y1==y2 ? 0 : .05f));
 		walls.Add(cube);
 		
@@ -171,8 +171,8 @@ public class t4labyrinth : MonoBehaviour {
 		int sizeX = levelData.sizeX;
 		int sizeY = levelData.sizeY;
 	
-		floorScript.PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
 		floorScript.PlaceFloor(map1, sizeX, sizeY, 0f, false);
+		floorScript.PlaceFloor(map2, sizeX, sizeY, ceilingHeight, true);
 		PlaceOuterWalls(sizeX, sizeY, ceilingHeight);
 		PlaceLabyrinth(map1, sizeX, sizeY, 0);
 		PlaceLabyrinth(map2, sizeX, sizeY, ceilingHeight - 1);

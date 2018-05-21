@@ -27,7 +27,7 @@ public class t4spikes : MonoBehaviour {
 		spikesBases.Add(cube);
 	}
 	
-	private float animateSpikesF(float t) {
+	private float animateSpikesF(float t, bool isCeiling) {
 		float k1 = 6f;
 		float k2 = 4f;
 		float x = t/k1 - Mathf.Floor(t/k1);
@@ -35,13 +35,14 @@ public class t4spikes : MonoBehaviour {
 		res = Mathf.Min(1.5f*res, 1f);
 		res -= 1f;
 		//print(res);
-		return ceilingHeight-res;
+		return isCeiling ? ceilingHeight-res : res;
 	}
 	
 	private void animateSpikes() {
 		foreach(GameObject spike in spikes) {
 			Vector3 pos = spike.transform.position;
-			spike.transform.position = new Vector3(pos[0], animateSpikesF(Time.realtimeSinceStartup), pos[2]);
+			bool isCeiling = pos[1] > ceilingHeight / 2;
+			spike.transform.position = new Vector3(pos[0], animateSpikesF(Time.realtimeSinceStartup, isCeiling), pos[2]);
 		}
 	}
 	
