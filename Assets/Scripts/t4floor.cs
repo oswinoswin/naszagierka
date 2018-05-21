@@ -42,12 +42,13 @@ public class t4floor : MonoBehaviour {
 		} else {
 			material = plane.GetComponent<Renderer>().material;
 			material.mainTexture = floorTexture;
+			material.mainTextureScale = new Vector2(.5f, .5f);
 			material.EnableKeyword("_EMISSION");	
 			material.SetTexture("_EmissionMap", floorTexture);
-			material.SetColor("_EmissionColor", new Color(.1f, .1f, .1f, .1f));
+			material.SetColor("_EmissionColor", new Color(.1f, .05f, 0f, .05f));
 			material.EnableKeyword("_NORMALMAP");
 			material.SetTexture("_BumpMap", heightMap);
-			material.SetFloat("_BumpScale", 0.5f);
+			material.SetFloat("_BumpScale", 0.2f);
 			material.EnableKeyword("_GLOSSYREFLECTIONS_OFF");	
 			material.SetFloat("_GlossyReflections", 0f);
 					

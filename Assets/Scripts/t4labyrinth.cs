@@ -52,16 +52,20 @@ public class t4labyrinth : MonoBehaviour {
 		
 		Material material = cube.GetComponent<Renderer>().material;
 		material.mainTexture = stoneTexture;
-		material.mainTextureScale = new Vector2(.5f, .5f);
+		material.mainTextureScale = new Vector2(.3f, .3f);
 		material.EnableKeyword("_NORMALMAP");
 		material.SetTexture("_BumpMap", heightMap);
 		material.SetFloat("_BumpScale", 0.5f);
+		material.EnableKeyword("_EMISSION");	
+		material.SetTexture("_EmissionMap", stoneTexture);
+		material.SetColor("_EmissionColor", new Color(.05f, .05f, .05f, .05f));
 		
 		Mesh mesh = cube.GetComponent<MeshFilter>().mesh;
 		Vector2[] uvs = mesh.uv;
-		uvs[1][0] = uvs[3][0] = uvs[7][0] = uvs[11][0] = (x2 - x1 + 1);
+		print(uvs);
+		uvs[1][0] = uvs[3][0] = uvs[7][0] = uvs[11][0] = uvs[5][0] = uvs[9][0] = (x2 - x1 + 1);
 		uvs[2][1] = uvs[3][1] = uvs[6][1] = uvs[7][1] = (h2 - h1);
-		uvs[18][0] = uvs[19][0] = uvs[22][0] = uvs[23][0] = (y2 - y1 + 1);
+		uvs[18][0] = uvs[19][0] = uvs[22][0] = uvs[23][0] = uvs[4][1] = uvs[5][1] = (y2 - y1 + 1);
 		uvs[18][1] = uvs[17][1] = uvs[21][1] = uvs[22][1] = (h2 - h1);
 		mesh.uv = uvs;
 	}
@@ -87,7 +91,7 @@ public class t4labyrinth : MonoBehaviour {
 				char field = GetField(map, sizeX, x, y);
 				if(field == '#' && startWall == -1) {
 					startWall = y;
-				} else if(field != '#' && startWall == y-1 && x>1
+				} else if(field != '#' && startWall == y-1
 							&& (GetField(map, sizeX, x-1, y-1) == '#' || GetField(map, sizeX, x+1, y-1) == '#')) {
 					startWall = -1;
 				} else if((field != '#' || y == sizeY-1) && startWall >= 0) {
