@@ -16,6 +16,7 @@ public class t4person : MonoBehaviour {
 	DateTime lastAction;
 	DateTime lastPress;
 	TimeSpan waitTime = new TimeSpan(0,0,0,0,300);
+	Vector3 tmp = new Vector3(0,0,0);
 	
 	
 	private Vector3 GetCoords(int x, int y, float h) {
@@ -32,19 +33,21 @@ public class t4person : MonoBehaviour {
 		print("MoveUp");
 		
 		
-		Vector3 position = player.transform.position;
-		Vector3 newPosition = new Vector3(position[0], heightUp, position[2]);
+		tmp = player.transform.position;
+		Vector3 newPosition = new Vector3(tmp[0], heightUp, tmp[2]);
 		player.transform.position = newPosition;
 		Physics.gravity = up;
+		print(player.transform.position);
 	}
 	
 		private void MoveDown(){
 		print("MoveDown");
 		
-		Vector3 position = player.transform.position;
-		Vector3 newPosition = new Vector3(position[0], 0, position[2]);
+		tmp = player.transform.position;
+		Vector3 newPosition = new Vector3(tmp[0], heightDown, tmp[2]);
 		player.transform.position = newPosition;
 		Physics.gravity = down;
+		print(player.transform.position);
 	}
 	
 	private void ToggleGravity(){
@@ -85,8 +88,8 @@ public class t4person : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		//ToggleGravity();
-		//Vector3 position = player.transform.position;
-		//print(position);
+		ToggleGravity();
+		Vector3 position = player.transform.position;
+		print("DEBUG" + position);
 	}
 }
