@@ -29,20 +29,22 @@ public class t4person : MonoBehaviour {
 	}
 	
 	private void MoveUp(){
-		//print("MoveUp");
-		Physics.gravity = up;
+		print("MoveUp");
 		
-		//Vector3 position = player.transform.position;
-		//Vector3 newPosition = new Vector3(position[0], heightUp, position[2]);
-		//player.transform.position = newPosition;
+		
+		Vector3 position = player.transform.position;
+		Vector3 newPosition = new Vector3(position[0], heightUp, position[2]);
+		player.transform.position = newPosition;
+		Physics.gravity = up;
 	}
 	
 		private void MoveDown(){
-		//print("MoveDown");
+		print("MoveDown");
+		
+		Vector3 position = player.transform.position;
+		Vector3 newPosition = new Vector3(position[0], 0, position[2]);
+		player.transform.position = newPosition;
 		Physics.gravity = down;
-		//Vector3 position = player.transform.position;
-		//Vector3 newPosition = new Vector3(position[0], heightDown, position[2]);
-		//player.transform.position = newPosition;
 	}
 	
 	private void ToggleGravity(){
@@ -61,13 +63,14 @@ public class t4person : MonoBehaviour {
 		}
 		if (Input.GetKey(KeyCode.G) ){
 			directionUp = !directionUp;
-			print("Change gravity!");
 			lastAction = lastPress;
+			ToggleGravity();
 		}
 	}
 	
 	public void Reset() {
 		PlacePlayer(GetCoords(1, 1, 1f), startingRotation);
+		MoveDown();
 	}
 	
 	void Start () {
@@ -82,8 +85,8 @@ public class t4person : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		ToggleGravity();
-		Vector3 position = player.transform.position;
-		print(position);
+		//ToggleGravity();
+		//Vector3 position = player.transform.position;
+		//print(position);
 	}
 }
