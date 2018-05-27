@@ -49,6 +49,8 @@ public class t4spikes : MonoBehaviour {
 	public void ClearAll() {
 		spikesBases.ForEach(Destroy);
 		spikesBases.Clear();
+		spikes.ForEach(Destroy);
+		spikes.Clear();
 	}
 	
 	void Update() {
