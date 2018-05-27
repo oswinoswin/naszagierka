@@ -11,7 +11,7 @@ public class t4 : MonoBehaviour {
 	public Text youDiedText;
 	
 	private const float ceilingHeight = 3f;
-	private int lvl = 0;
+	private int lvl = 2;
 	private int points = 0;
 	private float lastDeath = 0f;
 	
