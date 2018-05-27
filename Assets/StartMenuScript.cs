@@ -13,4 +13,9 @@ public class StartMenuScript : MonoBehaviour {
 		Debug.Log("Quit");
 		Application.Quit();
 	}
+	void Update(){
+		if (Input.GetKey(KeyCode.Q) ){
+			Application.Quit();
+		}
+	}
 }
