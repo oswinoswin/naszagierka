@@ -31,24 +31,24 @@ public class t4person : MonoBehaviour {
 	}
 	
 	private void MoveUp(){
-		print("MoveUp");
+		//print("MoveUp");
 		
 		
 		tmp = player.transform.position;
 		Vector3 newPosition = new Vector3(tmp[0], heightUp, tmp[2]);
 		player.transform.position = newPosition;
 		Physics.gravity = up;
-		print(player.transform.position);
+		//print(player.transform.position);
 	}
 	
 		private void MoveDown(){
-		print("MoveDown");
+		//print("MoveDown");
 		
 		tmp = player.transform.position;
 		Vector3 newPosition = new Vector3(tmp[0], heightDown, tmp[2]);
 		player.transform.position = newPosition;
 		Physics.gravity = down;
-		print(player.transform.position);
+		//print(player.transform.position);
 	}
 	
 	private void ToggleGravity(){
@@ -93,6 +93,6 @@ public class t4person : MonoBehaviour {
 			shuldChangeHeight = false;
 		}
 		Vector3 currentPosition = player.transform.position;
-		print("DEBUG" + currentPosition);
+		//print("DEBUG" + currentPosition);
 	}
 }

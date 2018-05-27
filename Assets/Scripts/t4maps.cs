@@ -136,7 +136,14 @@ public class t4maps : MonoBehaviour {
 			
 			new Torch[] {
 				new Torch(2, 1, 'n', false),
-				new Torch(7, 1, 'e', false)
+				new Torch(7, 1, 'e', false),
+				new Torch(7, 3, 's', false),
+				new Torch(5, 3, 'n', false),
+				new Torch(3, 3, 's', true),
+				new Torch(1, 4, 'e', true),
+				new Torch(3, 5, 's', true),
+				new Torch(6, 5, 's', false),
+				new Torch(1, 4, 'w', false)
 			},
 			new Vase[] {
 			}
