@@ -91,6 +91,7 @@ public class t4person : MonoBehaviour {
 	void FixedUpdate(){
 		if(shuldChangeHeight){
 			ToggleGravity();
+			shuldChangeHeight = false;
 		}
 		Vector3 currentPosition = player.transform.position;
 		print("DEBUG" + currentPosition);
