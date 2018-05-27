@@ -15,7 +15,7 @@ public class t4labyrinth : MonoBehaviour {
 	public t4spikes spikesScript;
 	public t4floor floorScript;
 	
-	private const float ceilingHeight = 3f;
+	private const float ceilingHeight = 2.7f;
 	private List<GameObject> walls = new List<GameObject>();
 	private List<GameObject> szalamis = new List<GameObject>();
 	private List<GameObject> flames = new List<GameObject>();
@@ -109,8 +109,9 @@ public class t4labyrinth : MonoBehaviour {
 		
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.name = "Door";
-		cube.transform.position = new Vector3(x+.5f, h, y+.5f);
-		cube.transform.localScale = new Vector3((onVerticalWall ? 1.06f : .6f), doorHeight, (onVerticalWall ? .6f : 1.06f));
+		// works only for x=sizeX-1!
+		cube.transform.position = new Vector3(x+.4f, h, y+.5f);
+		cube.transform.localScale = new Vector3((onVerticalWall ? 1f : .6f), doorHeight, (onVerticalWall ? .6f : 1f));
 		doors.Add(cube);
 		
 		Material material = cube.GetComponent<Renderer>().material;
@@ -121,6 +122,8 @@ public class t4labyrinth : MonoBehaviour {
 		material.EnableKeyword("_NORMALMAP");
 		material.SetTexture("_BumpMap", doorHeightMap);
 		material.SetFloat("_BumpScale", 0.5f);
+		
+		cube.GetComponent<Collider>().isTrigger = true;
 		
 	}
 	
@@ -164,6 +167,7 @@ public class t4labyrinth : MonoBehaviour {
 		torchesScript.ClearAll();
 		spikesScript.ClearAll();
 		floorScript.ClearAll();
+		vasesScript.ClearAll();
 	}
 	
 	public void BuildLabyrinth(int lvl) {

@@ -6,7 +6,7 @@ using UnityEngine;
 public class t4spikes : MonoBehaviour {
 	public GameObject spikesPrefab;
 	
-	private float ceilingHeight = 3f;
+	private float ceilingHeight = 2.7f;
 	private List<GameObject> spikes = new List<GameObject>();
 	private List<GameObject> spikesBases = new List<GameObject>();
 	private Dictionary<int, GameObject> coordsSpikes = new Dictionary<int, GameObject>();

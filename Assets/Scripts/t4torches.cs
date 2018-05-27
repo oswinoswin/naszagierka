@@ -23,7 +23,7 @@ public class t4torches : MonoBehaviour {
 	private void PlaceTorch(t4maps.Torch t) {
 		
 		float hRelative = .2f;
-		float h = t.ceiling ? 3f - hRelative : hRelative;
+		float h = t.ceiling ? 2.7f - hRelative : hRelative;
 		int angleRelative = 30;
 		int angle = t.ceiling ? 180 - angleRelative : angleRelative;
 		

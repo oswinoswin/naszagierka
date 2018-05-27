@@ -22,7 +22,7 @@ public class t4vases : MonoBehaviour {
 	
 	private void PlaceVase(t4maps.Vase t) {
 		
-		float h = t.ceiling ? 3f : 0f;
+		float h = t.ceiling ? 2.7f : 0f;
 		float dist = .2f;
 		int angleRelative = 30;
 		int angle = t.ceiling ? 180 - angleRelative : angleRelative;

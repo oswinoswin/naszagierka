@@ -12,7 +12,7 @@ public class t4person : MonoBehaviour {
 	private static bool shuldChangeHeight = false;
     private static Vector3 down = new Vector3(0.0f, -9.8f, 0f);
     private static Vector3 up = new Vector3(0f, 9.8f, 0f);
-	public static float heightUp = 2.5f;
+	public static float heightUp = 2.2f;
 	public static float heightDown = 0.5f;
 	DateTime lastAction;
 	DateTime lastPress;
@@ -84,11 +84,11 @@ public class t4person : MonoBehaviour {
 	}
 	
 	void Update () {	
-		CheckForGravityChange();
 		
 	}
 	
 	void FixedUpdate(){
+		CheckForGravityChange();
 		if(shuldChangeHeight){
 			ToggleGravity();
 			shuldChangeHeight = false;
