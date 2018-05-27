@@ -12,14 +12,14 @@ public class t4 : MonoBehaviour {
 	public Text youWonText;
 	
 	private const float ceilingHeight = 2.7f;
-	private int lvl = 2;
+	private int lvl = 0;
 	private int points = 0;
 	private float lastDeath = 0f;
 	
 	private Vector2 currentPosition;
 	
 	public void NextLevel() {
-		if(lvl >= 3) {
+		if(lvl < 3) {
 			lvl++;
 			LoadLevel();			
 		} else {

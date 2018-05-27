@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class t4person : MonoBehaviour {
 	
 	private Quaternion startingRotation = new Quaternion(0,0,0,1);
+	public Text warningText;
 	private static string playerName = "FPSController";
 	private static GameObject player;
 	public static bool directionUp = false;
@@ -30,69 +32,41 @@ public class t4person : MonoBehaviour {
 		player.transform.position = position;
 	}
 	
-	private void MoveUp(){
-		//print("MoveUp");
-		
-		
-		tmp = player.transform.position;
-		Vector3 newPosition = new Vector3(tmp[0], heightUp, tmp[2]);
-		player.transform.position = newPosition;
+	IEnumerator JumpToCeiling ()
+    {
 		Physics.gravity = up;
-		//print(player.transform.position);
-	}
-	
-		private void MoveDown(){
-		//print("MoveDown");
-		
-		tmp = player.transform.position;
-		Vector3 newPosition = new Vector3(tmp[0], heightDown, tmp[2]);
-		player.transform.position = newPosition;
+		Vector3 tmp = player.transform.position;
+		player.transform.position = new Vector3(tmp[0], heightUp, tmp[2]);
+        yield return new WaitForSeconds((float)UnityEngine.Random.Range(3, 6));
+		warningText.gameObject.SetActive(true);
 		Physics.gravity = down;
-		//print(player.transform.position);
-	}
+        yield return new WaitForSeconds(4f);
+		warningText.gameObject.SetActive(false);
+    }
 	
 	private void ToggleGravity(){
-		if (directionUp){               
-				MoveUp();
-            }
-        else{           
-			MoveDown();
+		if (Physics.gravity[1] < 0){       
+			StartCoroutine(JumpToCeiling());
         }
-	}
-	private void CheckForGravityChange(){
-		lastPress = DateTime.Now;
-		TimeSpan delta = lastPress - lastAction;
-		if(delta < waitTime){
-			return;
-		}
-		if (Input.GetKey(KeyCode.G) ){
-			directionUp = !directionUp;
-			lastAction = lastPress;
-			shuldChangeHeight = true;
-		}
 	}
 	
 	public void Reset() {
 		PlacePlayer(GetCoords(1, 1, 1f), startingRotation);
-		MoveDown();
 	}
 	
 	void Start () {
 		PlacePlayer(GetCoords(1, 1, 1f), startingRotation);
 		lastAction = DateTime.Now;
 		lastPress = DateTime.Now;
+		warningText.gameObject.SetActive(false);
 	}
 	
-	void Update () {	
-		CheckForGravityChange();
+	void Update () {
 	}
 	
 	void FixedUpdate(){
-		if(shuldChangeHeight){
+		if (Input.GetKey(KeyCode.G) ){
 			ToggleGravity();
-			shuldChangeHeight = false;
 		}
-		Vector3 currentPosition = player.transform.position;
-		//print("DEBUG" + currentPosition);
 	}
 }
