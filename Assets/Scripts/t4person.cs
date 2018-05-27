@@ -9,6 +9,7 @@ public class t4person : MonoBehaviour {
 	private static string playerName = "FPSController";
 	private static GameObject player;
 	public static bool directionUp = false;
+	private static bool shuldChangeHeight = false;
     private static Vector3 down = new Vector3(0.0f, -9.8f, 0f);
     private static Vector3 up = new Vector3(0f, 9.8f, 0f);
 	public static float heightUp = 2.5f;
@@ -67,7 +68,7 @@ public class t4person : MonoBehaviour {
 		if (Input.GetKey(KeyCode.G) ){
 			directionUp = !directionUp;
 			lastAction = lastPress;
-			ToggleGravity();
+			shuldChangeHeight = true;
 		}
 	}
 	
@@ -88,8 +89,11 @@ public class t4person : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		ToggleGravity();
-		Vector3 position = player.transform.position;
-		print("DEBUG" + position);
+		if(shuldChangeHeight){
+			ToggleGravity();
+			shuldChangeHeight = false;
+		}
+		Vector3 currentPosition = player.transform.position;
+		print("DEBUG" + currentPosition);
 	}
 }
