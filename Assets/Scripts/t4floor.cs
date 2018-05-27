@@ -42,7 +42,7 @@ public class t4floor : MonoBehaviour {
 		} else {
 			material = plane.GetComponent<Renderer>().material;
 			material.mainTexture = floorTexture;
-			material.mainTextureScale = new Vector2(.5f, .5f);
+			material.mainTextureScale = new Vector2(.33f, .33f);
 			material.EnableKeyword("_EMISSION");	
 			material.SetTexture("_EmissionMap", floorTexture);
 			material.SetColor("_EmissionColor", new Color(.1f, .05f, 0f, .05f));

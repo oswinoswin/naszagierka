@@ -84,11 +84,10 @@ public class t4person : MonoBehaviour {
 	}
 	
 	void Update () {	
-		
+		CheckForGravityChange();
 	}
 	
 	void FixedUpdate(){
-		CheckForGravityChange();
 		if(shuldChangeHeight){
 			ToggleGravity();
 			shuldChangeHeight = false;
