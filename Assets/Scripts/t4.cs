@@ -49,5 +49,8 @@ public class t4 : MonoBehaviour {
 	void Update() {
 		scoreText.text = points.ToString();
 		youDiedText.gameObject.SetActive(Time.realtimeSinceStartup - lastDeath <= 1.6f);
+		if (Input.GetKey(KeyCode.Q) ){
+			Application.Quit();
+		}
 	}
 }
